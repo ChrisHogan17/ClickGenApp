@@ -1,5 +1,7 @@
 # Clicktrack Generator Application
 
+The android application component for: https://github.com/EliGrosman/HuskyTechSummer2020
+
 A tool which detects beats in a song and plays a metronome in sync with the
 recording of the song.
 
