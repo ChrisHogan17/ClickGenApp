@@ -3,9 +3,11 @@ package edu.washington.hoganc17.clickgen
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.ByteArrayOutputStream
 
 
 // Code for this media player was created with help from the example at:
@@ -16,12 +18,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var songPlayer: MediaPlayer
     private lateinit var runnable: Runnable
     private var handler: Handler = Handler()
-    private var paused: Boolean = false
-
+    private var paused = false
+    private var playerReleased = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val theDust = resources.openRawResource(R.raw.another_one_bites_the_dust)
+        val theClick = resources.openRawResource(R.raw.another_one_click)
+        //combineTracks()
 
         btnPlay.setOnClickListener {
             playSong()
@@ -38,23 +44,24 @@ class MainActivity : AppCompatActivity() {
         btnStop.isEnabled = false
 
         seekBarTime.setOnSeekBarChangeListener(
-            object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    if (fromUser) {
-                        songPlayer.seekTo(progress * 1000)
+
+                object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                            seekBar: SeekBar?,
+                            progress: Int,
+                            fromUser: Boolean
+                    ) {
+                        if (fromUser) {
+                            songPlayer.seekTo(progress * 1000)
+                        }
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    }
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     }
                 }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                }
-            }
         )
 
         seekBarSongVolume.setOnSeekBarChangeListener(
@@ -89,6 +96,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             songPlayer = MediaPlayer.create(this, R.raw.another_one_click)
             songPlayer.start()
+            playerReleased = false
 
             songPlayer.setVolume(.5f, .5f)
             seekBarSongVolume.progress = 50
@@ -123,12 +131,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun pauseSong() {
-        if (songPlayer.isPlaying) {
-            songPlayer.pause()
-            paused = true
+        if (this::songPlayer.isInitialized) {
 
-            btnPause.isEnabled = false
-            btnPlay.isEnabled = true
+            if (!playerReleased && songPlayer.isPlaying) {
+                songPlayer.pause()
+                paused = true
+
+                btnPause.isEnabled = false
+                btnPlay.isEnabled = true
+            }
         }
     }
 
@@ -139,6 +150,7 @@ class MainActivity : AppCompatActivity() {
             songPlayer.stop()
             songPlayer.reset()
             songPlayer.release()
+            playerReleased = true
 
             handler.removeCallbacks(runnable)
 
@@ -146,6 +158,8 @@ class MainActivity : AppCompatActivity() {
             tvCurrTime.text = ""
             tvTotalTime.text = ""
 
+            btnPlay.isEnabled = true
+            btnPause.isEnabled = false
             btnStop.isEnabled = false
         }
     }
