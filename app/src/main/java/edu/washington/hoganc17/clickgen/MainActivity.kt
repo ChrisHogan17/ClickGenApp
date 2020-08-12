@@ -138,4 +138,9 @@ class MainActivity : AppCompatActivity() {
         duration += sec
         return duration
     }
+
+    override fun onPause() {
+        super.onPause()
+        pauseSong()
+    }
 }
