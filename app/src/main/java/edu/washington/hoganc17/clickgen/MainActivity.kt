@@ -13,10 +13,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var player: MediaPlayer
+    private lateinit var songPlayer: MediaPlayer
     private lateinit var runnable: Runnable
     private var handler: Handler = Handler()
-    private var pause: Boolean = false
+    private var paused: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,10 +30,12 @@ class MainActivity : AppCompatActivity() {
         btnPause.setOnClickListener {
             pauseSong()
         }
+        btnPause.isEnabled = false
 
         btnStop.setOnClickListener {
             stopPlayer()
         }
+        btnStop.isEnabled = false
 
         seekBarTime.setOnSeekBarChangeListener(
             object : SeekBar.OnSeekBarChangeListener {
@@ -43,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                     fromUser: Boolean
                 ) {
                     if (fromUser) {
-                        player.seekTo(progress * 1000)
+                        songPlayer.seekTo(progress * 1000)
                     }
                 }
 
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                     fromUser: Boolean
                 ) {
                     val volumeNum = progress / 100f
-                    player.setVolume(volumeNum, volumeNum)
+                    songPlayer.setVolume(volumeNum, volumeNum)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -76,32 +78,44 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun playSong() {
-        if (pause) {
-            player.seekTo(player.currentPosition)
-            player.start()
-            pause = false
+        if (paused) {
+            songPlayer.seekTo(songPlayer.currentPosition)
+            songPlayer.start()
+
+            btnPlay.isEnabled = false
+            btnPause.isEnabled = true
+            paused = false
+
         } else {
-            player = MediaPlayer.create(this, R.raw.another_one_bites_the_dust)
-            player.start()
-            player.setVolume(.5f, .5f)
+            songPlayer = MediaPlayer.create(this, R.raw.another_one_click)
+            songPlayer.start()
+
+            songPlayer.setVolume(.5f, .5f)
             seekBarSongVolume.progress = 50
-            tvTotalTime.text = formatMinSec(player.duration)
-            tvCurrTime.text = formatMinSec(player.currentPosition)
+
+            btnPlay.isEnabled = false
+            btnPause.isEnabled = true
+            btnStop.isEnabled = true
+
+            tvTotalTime.text = formatMinSec(songPlayer.duration)
+            tvCurrTime.text = formatMinSec(songPlayer.currentPosition)
         }
 
         initializeTimeSeekBar()
 
-        player.setOnCompletionListener {
-            // UI Changes
+        songPlayer.setOnCompletionListener {
+            btnPlay.isEnabled = true
+            btnPause.isEnabled = false
+            btnStop.isEnabled = false
         }
     }
 
     private fun initializeTimeSeekBar() {
-        seekBarTime.max = player.duration / 1000
+        seekBarTime.max = songPlayer.duration / 1000
 
         runnable = Runnable {
-            seekBarTime.progress = player.currentPosition / 1000
-            tvCurrTime.text = formatMinSec(player.currentPosition)
+            seekBarTime.progress = songPlayer.currentPosition / 1000
+            tvCurrTime.text = formatMinSec(songPlayer.currentPosition)
 
             handler.postDelayed(runnable, 1000)
         }
@@ -109,24 +123,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun pauseSong() {
-        if (player.isPlaying) {
-            player.pause()
-            pause = true
+        if (songPlayer.isPlaying) {
+            songPlayer.pause()
+            paused = true
+
+            btnPause.isEnabled = false
+            btnPlay.isEnabled = true
         }
     }
 
     private fun stopPlayer() {
-        if (player.isPlaying || pause) {
-            pause = false
-            player.stop()
-            player.reset()
-            player.release()
+        if (songPlayer.isPlaying || paused) {
+            paused = false
+
+            songPlayer.stop()
+            songPlayer.reset()
+            songPlayer.release()
+
             handler.removeCallbacks(runnable)
 
             seekBarTime.progress = 0
             tvCurrTime.text = ""
             tvTotalTime.text = ""
 
+            btnStop.isEnabled = false
         }
     }
 
