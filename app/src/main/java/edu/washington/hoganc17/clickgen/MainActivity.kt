@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             player.start()
             pause = false
         } else {
-            player = MediaPlayer.create(this, R.raw.robots)
+            player = MediaPlayer.create(this, R.raw.another_one_bites_the_dust)
             player.start()
             player.setVolume(.5f, .5f)
             seekBarSongVolume.progress = 50
