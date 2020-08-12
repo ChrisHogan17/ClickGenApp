@@ -4,7 +4,6 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -36,20 +35,44 @@ class MainActivity : AppCompatActivity() {
             stopPlayer()
         }
 
-        seekBarTime.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-                if (b) {
-                    player.seekTo(i * 1000)
+        seekBarTime.setOnSeekBarChangeListener(
+            object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    if (fromUser) {
+                        player.seekTo(progress * 1000)
+                    }
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 }
             }
+        )
 
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
+        seekBarSongVolume.setOnSeekBarChangeListener(
+            object: SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    val volumeNum = progress / 100f
+                    player.setVolume(volumeNum, volumeNum)
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                }
             }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-            }
-        })
-
+        )
     }
 
     private fun playSong() {
@@ -60,18 +83,20 @@ class MainActivity : AppCompatActivity() {
         } else {
             player = MediaPlayer.create(this, R.raw.robots)
             player.start()
-            tvRemainingTime.text = formatMinSec(player.duration)
+            player.setVolume(.5f, .5f)
+            seekBarSongVolume.progress = 50
+            tvTotalTime.text = formatMinSec(player.duration)
             tvCurrTime.text = formatMinSec(player.currentPosition)
         }
 
-        initializeSeekBar()
+        initializeTimeSeekBar()
 
         player.setOnCompletionListener {
             // UI Changes
         }
     }
 
-    private fun initializeSeekBar() {
+    private fun initializeTimeSeekBar() {
         seekBarTime.max = player.duration / 1000
 
         runnable = Runnable {
@@ -100,7 +125,7 @@ class MainActivity : AppCompatActivity() {
 
             seekBarTime.progress = 0
             tvCurrTime.text = ""
-            tvRemainingTime.text = ""
+            tvTotalTime.text = ""
 
         }
     }

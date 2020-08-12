@@ -4,4 +4,5 @@
     <string name="playButton">Play</string>
     <string name="stopButton">Stop</string>
     <string name="pauseButton">Pause</string>
+    <string name="song_volume">Song volume</string>
 </resources>
