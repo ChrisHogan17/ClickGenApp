@@ -6,8 +6,11 @@ import android.os.Handler
 import android.util.Log
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import com.musicg.wave.Wave
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 
 // Code for this media player was created with help from the example at:
@@ -25,9 +28,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val theDust = resources.openRawResource(R.raw.another_one_bites_the_dust)
-        val theClick = resources.openRawResource(R.raw.another_one_click)
-        //combineTracks()
+        val theDust = resources.openRawResource(R.raw.bites_dust_16)
+        val theClick = resources.openRawResource(R.raw.bites_click_16)
+
+        mixSound(theDust, theClick)
 
         btnPlay.setOnClickListener {
             playSong()
@@ -94,8 +98,12 @@ class MainActivity : AppCompatActivity() {
             paused = false
 
         } else {
-            songPlayer = MediaPlayer.create(this, R.raw.another_one_click)
+            songPlayer = MediaPlayer()
+            //songPlayer = MediaPlayer.create(this, R.raw.another_one_click)
+            songPlayer.setDataSource(applicationContext.filesDir.path + "/mixed_sounds.wav")
+            songPlayer.prepare()
             songPlayer.start()
+
             playerReleased = false
 
             songPlayer.setVolume(.5f, .5f)
@@ -176,5 +184,71 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         pauseSong()
+    }
+
+
+
+    // Code from: https://stackoverflow.com/questions/40929243/how-to-mix-two-wav-files-without-noise
+    private fun mixSound(trackOne: InputStream, trackTwo: InputStream) {
+
+        val w1 = Wave(trackOne)
+        val music1: ShortArray = w1.sampleAmplitudes
+        trackOne.close()
+
+        val w2 = Wave(trackTwo)
+        val music2: ShortArray = w2.sampleAmplitudes
+        trackTwo.close()
+
+
+        // 8 bit file + 8 bit file = 8 bit file
+        /*
+        val output = ByteArray(if (music1.size > music2.size) music2.size else music1.size)
+
+        for (i in output.indices) {
+            val samplef1 = music1[i] / 128.0f * 1.2f // 2^7=128
+            val samplef2 = music2[i] / 128.0f * 1.2f
+            val mixed = (samplef1 + samplef2) / 2
+            val outputSample = (mixed * 128.0f).toByte()
+            output[i] = outputSample
+        }
+        */
+
+        // 16 bit + 16 bit = 16 bit file
+        val output = ByteArray(if (music1.size > music2.size) music2.size * 2 else music1.size * 2)
+
+        var outputIndex = 0
+        for (i in music1.indices) {
+            val sample1 = music1[i] / 128.0f * 1.2f
+            val sample2 = music2[i] / 250.0f
+
+            val mixed = (sample1 + sample2) / 2
+            var mixedString = Integer.toBinaryString(mixed.toInt())
+            mixedString = mixedString.padStart(16, '0')
+
+            mixedString = mixedString.substring(mixedString.length - 16)
+            val byte1 = mixedString.substring(0, 8)
+            val byte2 = mixedString.substring(8, 16)
+
+            output[outputIndex] = Integer.parseInt(byte1, 2).toByte()
+            output[outputIndex + 1] = Integer.parseInt(byte2, 2).toByte()
+            outputIndex += 2
+        }
+
+        val f = File(applicationContext.filesDir.path + "/mixed_sounds.wav")
+        if (f.exists()) {
+            f.delete()
+        }
+
+        val fo = FileOutputStream(f)
+
+        val wh = w2.waveHeader
+        val mwh = MyWaveHeader(wh.audioFormat.toShort(),
+                wh.channels.toShort(), wh.sampleRate,
+                wh.bitsPerSample.toShort(), output.size)
+        mwh.write(fo)
+
+        fo.write(output)
+        fo.flush()
+        fo.close()
     }
 }
