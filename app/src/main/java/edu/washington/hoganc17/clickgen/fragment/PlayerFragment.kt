@@ -31,6 +31,7 @@ class PlayerFragment: Fragment() {
     private val audioManager = AudioManager()
 
     private var paused = false
+    private var stopped = true
     private var playerReleased = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,13 +60,12 @@ class PlayerFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnPlay.setOnClickListener {
-            playSong()
+            if (stopped || paused) {
+                playSong()
+            } else {
+                pauseSong()
+            }
         }
-
-        btnPause.setOnClickListener {
-            pauseSong()
-        }
-        btnPause.isEnabled = false
 
         btnStop.setOnClickListener {
             stopPlayer()
@@ -114,15 +114,7 @@ class PlayerFragment: Fragment() {
     }
 
     private fun playSong() {
-        if (paused) {
-            songPlayer.seekTo(songPlayer.currentPosition)
-            songPlayer.start()
-
-            btnPlay.isEnabled = false
-            btnPause.isEnabled = true
-            paused = false
-
-        } else {
+        if (stopped) { // Start MediaPlayer
             songPlayer = MediaPlayer()
             //songPlayer = MediaPlayer.create(this, R.raw.another_one_click)
 
@@ -137,19 +129,25 @@ class PlayerFragment: Fragment() {
             songPlayer.setVolume(.5f, .5f)
             seekBarSongVolume.progress = 50
 
-            btnPlay.isEnabled = false
-            btnPause.isEnabled = true
             btnStop.isEnabled = true
+
+            stopped = false
 
             tvTotalTime.text = formatMinSec(songPlayer.duration)
             tvCurrTime.text = formatMinSec(songPlayer.currentPosition)
+
+        } else if (paused) {
+            songPlayer.seekTo(songPlayer.currentPosition)
+            songPlayer.start()
+
+            paused = false
         }
+
+        btnPlay.setImageResource(R.drawable.pause_button)
 
         initializeTimeSeekBar()
 
         songPlayer.setOnCompletionListener {
-            btnPlay.isEnabled = true
-            btnPause.isEnabled = false
             btnStop.isEnabled = false
         }
     }
@@ -173,15 +171,16 @@ class PlayerFragment: Fragment() {
                 songPlayer.pause()
                 paused = true
 
-                btnPause.isEnabled = false
-                btnPlay.isEnabled = true
             }
+
+            btnPlay.setImageResource(R.drawable.play_button)
         }
     }
 
     private fun stopPlayer() {
         if (songPlayer.isPlaying || paused) {
             paused = false
+            stopped = true
 
             songPlayer.stop()
             songPlayer.reset()
@@ -194,9 +193,8 @@ class PlayerFragment: Fragment() {
             tvCurrTime.text = ""
             tvTotalTime.text = ""
 
-            btnPlay.isEnabled = true
-            btnPause.isEnabled = false
             btnStop.isEnabled = false
+            btnPlay.setImageResource(R.drawable.play_button)
         }
     }
 

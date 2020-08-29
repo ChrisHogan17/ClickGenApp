@@ -9,44 +9,32 @@
     android:focusable="true"
     >
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="@string/mainTitle"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
+    <ImageButton
+        android:src="@drawable/play_button"
         android:id="@+id/btnPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/playButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:foreground="?selectableItemBackground"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/btnPause"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-    <Button
-        android:id="@+id/btnPause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pauseButton"
-        app:layout_constraintLeft_toRightOf="@id/btnPlay"
         app:layout_constraintRight_toLeftOf="@id/btnStop"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@id/ivMetroGnome"
+        android:contentDescription="@string/play_and_pause_button" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnStop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:src="@drawable/stop_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:foreground="?selectableItemBackground"
         android:text="@string/stopButton"
-        app:layout_constraintLeft_toRightOf="@id/btnPause"
+        app:layout_constraintLeft_toRightOf="@id/btnPlay"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@id/ivMetroGnome"
+        android:contentDescription="@string/stop_button"/>
 
     <SeekBar
         android:id="@+id/seekBarTime"
@@ -56,7 +44,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnPause" />
+        app:layout_constraintTop_toBottomOf="@id/btnPlay" />
 
 
     <TextView
@@ -102,6 +90,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
+
+    <ImageView
+        android:id="@+id/ivMetroGnome"
+        android:layout_width="246dp"
+        android:layout_height="108dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/MetroGnome"
+        android:src="@drawable/group_3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
