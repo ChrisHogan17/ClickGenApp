@@ -232,7 +232,6 @@ class PlayerFragment: Fragment() {
 
         val mwh = MyWaveHeader(mixedTracks.size)
         mwh.write(fo)
-        Log.i("YEET", mwh.toString())
 
         fo.write(mixedTracks)
         fo.flush()
