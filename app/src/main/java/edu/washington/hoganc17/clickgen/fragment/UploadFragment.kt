@@ -1,10 +1,8 @@
 package edu.washington.hoganc17.clickgen.fragment
 
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,15 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import edu.washington.hoganc17.clickgen.OnUploadListener
 import edu.washington.hoganc17.clickgen.R
-import edu.washington.hoganc17.clickgen.ServerAPI
-import edu.washington.hoganc17.clickgen.ServerApiKotlin
 import kotlinx.android.synthetic.main.fragment_upload.*
-import okhttp3.*
-import retrofit2.Call
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
 
 
 class UploadFragment : Fragment() {
@@ -58,8 +48,8 @@ class UploadFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnUploadFile.setOnClickListener {
-            //onUploadListener?.onFileUploaded()
-            selectFile()
+            onUploadListener?.onFileUploaded()
+            //selectFile()
         }
     }
 
@@ -75,33 +65,7 @@ class UploadFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == FILE_CHOICE_CODE && resultCode == Activity.RESULT_OK) {
-            val uri = data?.data
-            uri?.let {
-                uploadFile(it)
-            }
+
         }
-    }
-
-    private fun uploadFile(uri: Uri) {
-        val file = File("" + uri)
-        val fileType = context?.contentResolver?.getType(uri)
-
-        val descPart = RequestBody.create(MultipartBody.FORM, "description")
-
-        val filePart = RequestBody.create(
-                MediaType.parse(fileType!!),
-                file
-        )
-
-        val multiPart = MultipartBody.Part.createFormData("Song", file.name, filePart)
-
-        val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-        val serverAPI = retrofit.create(ServerApiKotlin::class.java)
-
-        val call = serverAPI.postSong(descPart, multiPart)
     }
 }
