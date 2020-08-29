@@ -6,100 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="@string/mainTitle"
-        android:textSize="50sp"
-        android:textStyle="bold"
+    <FrameLayout
+        android:id="@+id/fragContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/playButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/btnPause"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-    <Button
-        android:id="@+id/btnPause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pauseButton"
-        app:layout_constraintLeft_toRightOf="@id/btnPlay"
-        app:layout_constraintRight_toLeftOf="@id/btnStop"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-    <Button
-        android:id="@+id/btnStop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/stopButton"
-        app:layout_constraintLeft_toRightOf="@id/btnPause"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-    <SeekBar
-        android:id="@+id/seekBarTime"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnPause" />
-
-
-    <TextView
-        android:id="@+id/tvCurrTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="8dp"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/seekBarTime"
-        tools:text="0:47" />
-
-    <TextView
-        android:id="@+id/tvTotalTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="48dp"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/seekBarTime"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="0:42"
-        />
-
-    <SeekBar
-        android:id="@+id/seekBarSongVolume"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCurrTime" />
-
-    <TextView
-        android:id="@+id/tvSongVolume"
-        android:text="@string/song_volume"
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/seekBarSongVolume"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        />
-
-
+        >
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
