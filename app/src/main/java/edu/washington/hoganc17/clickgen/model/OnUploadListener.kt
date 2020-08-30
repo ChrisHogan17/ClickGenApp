@@ -1,5 +1,5 @@
 package edu.washington.hoganc17.clickgen.model
 
 interface OnUploadListener {
-    fun onFileUploaded()
+    fun onFileUploaded(trio: AudioTrio)
 }

@@ -110,7 +110,7 @@ class UploadFragment : Fragment() {
             }
         }
         if (result == null) {
-            result = uri.getPath()
+            result = uri.path
             val cut = result?.lastIndexOf('/')
             if (cut != -1) {
                 if (cut != null) {
