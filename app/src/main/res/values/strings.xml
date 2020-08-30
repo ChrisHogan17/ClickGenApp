@@ -9,8 +9,8 @@
     <string name="play_and_pause_button">Play and Pause Button</string>
     <string name="MetroGnome">MetroGnome</string>
     <string name="stop_button">Stop Button</string>
-    <string name="app_description">MetroGnome generates a click track that plays along with the beats any song!</string>
-    <string name="upload_instructions">Start by uploading a song of your choice in the supported formats of .mp3 or .wav</string>
+    <string name="app_description">The ability to seamlessly generate a metronome click track for any song - right at your fingertips!</string>
+    <string name="upload_instructions">Start by uploading a song of your choice in the supported formats of <i>.mp3</i> or <i>.wav</i></string>
     <string name="please_wait">Please wait while your file is processed by our team of gnomes. This may take a few minutes.</string>
     <string name="click_frequency">Frequency (Hz) :</string>
     <string name="click_duration">Duration (sec) :</string>
