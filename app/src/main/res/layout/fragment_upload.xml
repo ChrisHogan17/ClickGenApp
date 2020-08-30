@@ -38,13 +38,29 @@
         android:layout_height="wrap_content"
         android:text="@string/app_description"
         android:textAlignment="center"
+        android:padding="10dp"
         android:textColor="@color/colorText"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/tvUploadInstructions"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivTitle" />
+        app:layout_constraintTop_toBottomOf="@id/ivTitle"
+        app:layout_constraintBottom_toTopOf="@id/tvUploadInstructions"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+    <TextView
+        android:id="@+id/tvClickSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/click_settings"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUploadInstructions"
+        />
 
     <TextView
         android:id="@+id/tvUploadInstructions"
@@ -54,42 +70,66 @@
         android:textAlignment="center"
         android:textColor="@color/colorText"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/btnUploadFile"
+        app:layout_constraintBottom_toTopOf="@id/spinnerFrequency"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvAppDescription" />
 
+    <TextView
+        android:id="@+id/tvFrequency"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/click_frequency"
+        android:textColor="@color/colorText"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/spinnerFrequency"
+        app:layout_constraintTop_toBottomOf="@id/tvClickSettings" />
 
     <Spinner
         android:id="@+id/spinnerFrequency"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toTopOf="@id/spinnerDuration"
+        app:layout_constraintLeft_toRightOf="@id/tvFrequency"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvClickSettings" />
+
+    <TextView
+        android:id="@+id/tvDuration"
+        android:text="@string/click_duration"
+        android:textSize="18sp"
+        android:layout_width="180dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorText"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvUploadInstructions"
-        app:layout_constraintBottom_toTopOf="@id/spinnerDuration"
+        app:layout_constraintRight_toLeftOf="@id/spinnerDuration"
+        app:layout_constraintTop_toBottomOf="@id/tvFrequency"
         />
 
     <Spinner
         android:id="@+id/spinnerDuration"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_margin="20dp"
+        app:layout_constraintLeft_toRightOf="@id/tvDuration"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinnerFrequency"
-        app:layout_constraintBottom_toTopOf="@id/btnUploadFile"
-        />
+        app:layout_constraintTop_toBottomOf="@id/spinnerFrequency" />
 
     <Button
         android:id="@+id/btnUploadFile"
-        android:text="@string/upload_file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/upload_file"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinnerDuration"
-        />
+        app:layout_constraintTop_toBottomOf="@id/spinnerDuration" />
 
     <ProgressBar
         android:id="@+id/progressBar"
