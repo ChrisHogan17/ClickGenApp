@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import edu.washington.hoganc17.clickgen.MainActivity
 import edu.washington.hoganc17.clickgen.R
 import edu.washington.hoganc17.clickgen.model.FileUploadUtils
 import edu.washington.hoganc17.clickgen.model.OnUploadListener
@@ -76,9 +77,14 @@ class UploadFragment : Fragment() {
             freqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerFrequency.adapter = freqAdapter
 
+            spinnerFrequency.onItemSelectedListener = it as MainActivity
+
             val durationAdapter = ArrayAdapter.createFromResource(it, R.array.durations, android.R.layout.simple_spinner_item)
             durationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerDuration.adapter = durationAdapter
+
+            spinnerDuration.onItemSelectedListener = it
+
 
         }
     }

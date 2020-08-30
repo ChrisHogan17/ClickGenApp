@@ -2,6 +2,8 @@ package edu.washington.hoganc17.clickgen
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import com.musicg.wave.Wave
 import edu.washington.hoganc17.clickgen.fragment.PlayerFragment
@@ -15,9 +17,11 @@ import java.io.InputStream
 // Code for this media player was created with help from the example at:
 // https://www.javatpoint.com/kotlin-android-media-player
 
-class MainActivity : AppCompatActivity(), OnUploadListener {
+class MainActivity : AppCompatActivity(), OnUploadListener, AdapterView.OnItemSelectedListener {
 
     private val audioManager = AudioManager()
+    private var clickFrequency = 880.0f
+    private var clickDuration = 0.5f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,12 +53,10 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         val songSampleAmps: ShortArray = w1.sampleAmplitudes
         songInputStream.close()
 
-        // times and sr are given by the server. click_freq and click_dur will be set by the user
-        val clickFreq = 880.0f
-        val clickDur = 0.5f
+        // times and sr are given by the server
         val length = songSampleAmps.size
 
-        val clickSampleAmps = audioManager.generateClicktrack(times, sampleRate, clickFreq, clickDur, length)
+        val clickSampleAmps = audioManager.generateClicktrack(times, sampleRate, clickFrequency, clickDuration, length)
 
         val doubledClickAmps = ShortArray(songSampleAmps.size)
         var c = 0
@@ -110,5 +112,19 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
             .add(R.id.fragContainer, playerFragment, PlayerFragment.TAG)
             .addToBackStack(PlayerFragment.TAG)
             .commit()
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val itemContent = parent?.getItemAtPosition(position).toString()
+        val numericalVal = itemContent.split(" ")[0]
+        Log.i("BRIT", numericalVal)
+        if(parent?.id == R.id.spinnerDuration) {
+            clickDuration = numericalVal.toFloat()
+        } else if (parent?.id == R.id.spinnerFrequency) {
+            clickFrequency = numericalVal.toFloat()
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 }
