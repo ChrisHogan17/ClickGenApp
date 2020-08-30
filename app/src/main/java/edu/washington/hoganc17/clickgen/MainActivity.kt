@@ -60,10 +60,11 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         var c = 0
         for (i in clickSampleAmps.indices) {
             doubledClickAmps[c] = clickSampleAmps[i]
+            doubledClickAmps[c+1] = clickSampleAmps[i]
             c += 2
         }
 
-        val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, doubledClickAmps)
+        val mixedTracks = audioManager.mixAmplitudesSixteenBit(doubledClickAmps, doubledClickAmps)
 
         val bundle = Bundle()
         bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedTracks)
@@ -94,6 +95,7 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         var c = 0
         for (i in clickSampleAmps.indices) {
             doubledClickAmps[c] = clickSampleAmps[i]
+            doubledClickAmps[c+1] = clickSampleAmps[i]
             c += 2
         }
 

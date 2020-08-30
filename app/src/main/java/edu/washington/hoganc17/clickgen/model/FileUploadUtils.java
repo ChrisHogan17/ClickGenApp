@@ -6,14 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hc.client5.http.classic.methods.*;
+import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.entity.mime.*;
 import org.apache.hc.client5.http.impl.classic.*;
 import org.apache.hc.core5.http.*;
 import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
+import org.apache.hc.core5.net.URIBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -120,5 +124,71 @@ public class FileUploadUtils {
 		} else {
 			throw new NullPointerException();
 		}
+	}
+
+	public static InputStream getFile(String key, String type, String url) throws IOException {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		String newUrl = url + "/" + key + "_" + type + ".wav";
+		HttpGet uploadFile = new HttpGet(newUrl);
+
+
+		CloseableHttpResponse response = httpClient.execute(uploadFile);
+		HttpEntity responseEntity = response.getEntity();
+
+		File saveFile = File.createTempFile("converted", "wav");
+
+		if (responseEntity != null) {
+			try (FileOutputStream outstream = new FileOutputStream(saveFile)) {
+				responseEntity.writeTo(outstream);
+			}
+		}
+
+		InputStream is = new FileInputStream(saveFile);
+		saveFile.delete();
+
+		return is;
+	}
+
+	public static String generate(InputStream input, String url, String filename, float click_freq, float click_dur) throws IOException, URISyntaxException, JSONException {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		URIBuilder uriBuilder = new URIBuilder(url);
+
+
+		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		postParameters.add(new BasicNameValuePair("click_freq", click_freq + ""));
+		postParameters.add(new BasicNameValuePair("click_dur", click_dur + ""));
+
+		uriBuilder.addParameters(postParameters);
+
+		HttpPost uploadFile = new HttpPost(uriBuilder.build());
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+
+
+
+		uploadFile.setEntity(new UrlEncodedFormEntity(postParameters));
+
+		builder.addBinaryBody(
+				"audioFile",
+				input,
+				ContentType.APPLICATION_OCTET_STREAM,
+				filename
+		);
+
+		HttpEntity multipart = builder.build();
+		uploadFile.setEntity(multipart);
+
+		CloseableHttpResponse response = httpClient.execute(uploadFile);
+		HttpEntity responseEntity = response.getEntity();
+		Header[] responseHeaders = response.getHeaders();
+
+		JSONObject headerObj = null;
+		for( Header h : responseHeaders ) {
+			if(h.getName().equals("X-Urls"))
+				headerObj = new JSONObject(h.getValue());
+		}
+
+		String key = headerObj.optString("key");
+
+		return key;
 	}
 }

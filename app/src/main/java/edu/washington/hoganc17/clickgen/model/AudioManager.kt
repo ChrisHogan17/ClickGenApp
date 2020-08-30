@@ -22,7 +22,7 @@ class AudioManager {
         for (i in trackTwo.indices) {
             // Numbers borrowed from Stack Overflow Code
             // Needs fine tuning as we don't really understand why the values are what they are
-            val sample1 = trackOne[i] / 128.0f * 1.2f
+            val sample1 = trackOne[i] / 200.0f * 1.2f
             val sample2 = trackTwo[i] / 250.0f
 
             // Average the altitude of each sample into one value
@@ -121,12 +121,13 @@ class AudioManager {
             } else {
                 //appending clicks onto the click signal newPositions
                 for (amplitude in spacedVals) {
-                    newPositions.add(amplitude.toShort())
+                    newPositions.add(Math.round(amplitude * 10000f).toShort())
                 }
             }
         }
 
-        Log.i("HELP", newPositions.toString())
+        Log.i("I hate this", newPositions.toString())
+
         var ret: ArrayList<Short> = ArrayList<Short>(newPositions.subList(0, length/2))
         return ret
     }
