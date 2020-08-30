@@ -44,21 +44,25 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         val times = trio.beatsArray.toIntArray()
         val sampleRate = trio.sr.toFloat()
         val songInputStream = trio.inputStream
-
-        // times and sr are given by the server. click_freq and click_dur will be set by the user
-        val clickFreq = 880.0f
-        val clickDur = 0.5f
-
-        val clickSampleAmps = audioManager.generateClicktrack(times, sampleRate, clickFreq, clickDur)
-        Log.i("ELI", clickSampleAmps.size.toString())
-
+//
+//        // times and sr are given by the server. click_freq and click_dur will be set by the user
+//        val clickFreq = 880.0f
+//        val clickDur = 0.5f
+//
+//        val clickSampleAmps = audioManager.generateClicktrack(times, sampleRate, clickFreq, clickDur)
+//        Log.i("ELI", clickSampleAmps.size.toString())
+//
         val w1 = Wave(songInputStream)
         val songSampleAmps: ShortArray = w1.sampleAmplitudes
         songInputStream.close()
 
-        val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, clickSampleAmps)
+        val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, songSampleAmps)
+
+        val bundle = Bundle()
+        bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedTracks)
 
         val playerFragment = PlayerFragment()
+        playerFragment.arguments = bundle
 
         supportFragmentManager
                 .beginTransaction()
