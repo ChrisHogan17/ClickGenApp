@@ -7,6 +7,7 @@ import com.musicg.wave.Wave
 import edu.washington.hoganc17.clickgen.fragment.PlayerFragment
 import edu.washington.hoganc17.clickgen.fragment.UploadFragment
 import edu.washington.hoganc17.clickgen.model.AudioManager
+import edu.washington.hoganc17.clickgen.model.AudioTrio
 import edu.washington.hoganc17.clickgen.model.OnUploadListener
 import java.io.InputStream
 
@@ -38,8 +39,40 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         }
     }
 
+    // Process for generating the click track on the application
+    override fun onFileUploaded(trio: AudioTrio) {
+        val times = trio.beatsArray.toIntArray()
+        val sampleRate = trio.sr.toFloat()
+        val songInputStream = trio.inputStream
+
+        val w1 = Wave(songInputStream)
+        val songSampleAmps: ShortArray = w1.sampleAmplitudes
+        songInputStream.close()
+
+        // times and sr are given by the server. click_freq and click_dur will be set by the user
+        val clickFreq = 880.0f
+        val clickDur = 0.5f
+        val length = songSampleAmps.size
+
+        val clickSampleAmps = audioManager.generateClicktrack(times, sampleRate, clickFreq, clickDur, length)
+        val mixedTracks = audioManager.mixAmplitudesSixteenBit(clickSampleAmps, clickSampleAmps)
+
+        val bundle = Bundle()
+        bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedTracks)
+
+        val playerFragment = PlayerFragment()
+        playerFragment.arguments = bundle
+
+        supportFragmentManager
+                .beginTransaction()
+                .add(R.id.fragContainer, playerFragment, PlayerFragment.TAG)
+                .addToBackStack(PlayerFragment.TAG)
+                .commit()
+    }
+
+
+    // Process for when the server generates the click track
     override fun onFileUploaded(songStream: InputStream, clickStream: InputStream) {
-        Log.i("HULK", "Activity")
 
         val w1 = Wave(songStream)
         val songSampleAmps: ShortArray = w1.sampleAmplitudes
