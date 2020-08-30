@@ -60,31 +60,26 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvAppDescription" />
 
-    <EditText
-        android:id="@+id/etFrequency"
-        android:hint="@string/click_frequency"
-        android:gravity="start"
-        android:layout_width="250dp"
+
+    <Spinner
+        android:id="@+id/spinnerFrequency"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvUploadInstructions"
-        app:layout_constraintBottom_toTopOf="@id/etDuration"
-        android:autofillHints="@string/click_frequency"
-        android:inputType="numberDecimal" />
+        app:layout_constraintBottom_toTopOf="@id/spinnerDuration"
+        />
 
-    <EditText
-        android:id="@+id/etDuration"
-        android:hint="@string/click_frequency"
-        android:gravity="start"
-        android:layout_width="250dp"
+    <Spinner
+        android:id="@+id/spinnerDuration"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etFrequency"
+        app:layout_constraintTop_toBottomOf="@id/spinnerFrequency"
         app:layout_constraintBottom_toTopOf="@id/btnUploadFile"
-        android:autofillHints="@string/click_frequency"
-        android:inputType="numberDecimal" />
+        />
 
     <Button
         android:id="@+id/btnUploadFile"
@@ -93,7 +88,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etDuration"
+        app:layout_constraintTop_toBottomOf="@id/spinnerDuration"
         />
 
     <ProgressBar

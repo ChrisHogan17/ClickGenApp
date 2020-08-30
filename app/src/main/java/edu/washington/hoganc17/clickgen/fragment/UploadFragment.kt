@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import edu.washington.hoganc17.clickgen.R
 import edu.washington.hoganc17.clickgen.model.FileUploadUtils
@@ -69,6 +70,17 @@ class UploadFragment : Fragment() {
         btnUploadFile.setOnClickListener {
             selectFile()
         }
+
+        context?.let {
+            val freqAdapter = ArrayAdapter.createFromResource(it, R.array.frequencies, android.R.layout.simple_spinner_item)
+            freqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerFrequency.adapter = freqAdapter
+
+            val durationAdapter = ArrayAdapter.createFromResource(it, R.array.durations, android.R.layout.simple_spinner_item)
+            durationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerDuration.adapter = durationAdapter
+
+        }
     }
 
     private fun selectFile() {
@@ -86,8 +98,8 @@ class UploadFragment : Fragment() {
             btnUploadFile.visibility = View.GONE
             tvAppDescription.visibility = View.GONE
             tvUploadInstructions.visibility = View.GONE
-            etDuration.visibility = View.GONE
-            etFrequency.visibility = View.GONE
+            spinnerFrequency.visibility = View.GONE
+            spinnerDuration.visibility = View.GONE
             tvPleaseWait.visibility = View.VISIBLE
             progressBar.visibility = View.VISIBLE
 
