@@ -63,10 +63,6 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
             c += 2
         }
 
-        Log.i("AGONY", songSampleAmps.size.toString())
-        Log.i("AGONY", clickSampleAmps.size.toString())
-        Log.i("AGONY", doubledClickAmps.size.toString())
-
         val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, doubledClickAmps)
 
         val bundle = Bundle()
@@ -101,8 +97,6 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
             c += 2
         }
 
-        Log.i("AGONY", songSampleAmps.size.toString())
-        Log.i("AGONY", doubledClickAmps.size.toString())
         val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, doubledClickAmps)
 
         val bundle = Bundle()
