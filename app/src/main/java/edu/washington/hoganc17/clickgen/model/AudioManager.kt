@@ -19,6 +19,7 @@ class AudioManager {
 
         var outputIndex = 0
 
+        var absMax = getAbsMax(trackOne)!! / 200.0f * 1.2f;
         for (i in trackTwo.indices) {
             // Numbers borrowed from Stack Overflow Code
             // Needs fine tuning as we don't really understand why the values are what they are
