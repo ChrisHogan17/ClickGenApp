@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         val clickSampleAmps = audioManager.generateClicktrack(times, sampleRate, clickFreq, clickDur, length)
         Log.i("ELI", clickSampleAmps.size.toString())
         
-        val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, clickSampleAmps)
+        val mixedTracks = audioManager.mixAmplitudesSixteenBit(clickSampleAmps, clickSampleAmps)
 
         val bundle = Bundle()
         bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedTracks)
