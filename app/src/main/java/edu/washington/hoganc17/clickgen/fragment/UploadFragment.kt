@@ -27,13 +27,11 @@ class UploadFragment : Fragment() {
 
     private var onUploadListener: OnUploadListener? = null
 
-
     companion object {
         val TAG: String = UploadFragment::class.java.simpleName
         const val FILE_CHOICE_CODE = 4307
         private const val URL = "http://174.21.95.118:5000/generate"
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +73,8 @@ class UploadFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == FILE_CHOICE_CODE && resultCode == Activity.RESULT_OK) {
-//            val theDust = resources.openRawResource(R.raw.bites_dust_16)
+            btnUploadFile.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
 
             val uri = data?.data
 
