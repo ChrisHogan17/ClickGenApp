@@ -37,7 +37,7 @@ public class FileUploadUtils {
 //		}
 //	}
 
-	public static AudioTrio generate(InputStream input, String url, String filename) throws IOException, NullPointerException, JSONException {
+	public static InputStream requestFile(InputStream input, String url, String filename) throws IOException, NullPointerException {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpPost uploadFile = new HttpPost(url);
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
@@ -66,27 +66,6 @@ public class FileUploadUtils {
 		InputStream is = new FileInputStream(saveFile);
 		saveFile.delete();
 
-		JSONObject beatsObj = null;
-		for( Header h : responseHeaders ) {
-			if(h.getName().equals("X-Beats"))
-				beatsObj = new JSONObject(h.getValue());
-		}
-
-		JSONArray beatsArray = beatsObj.optJSONArray("beats");
-		int sr = beatsObj.optInt("sr");
-		if(beatsArray != null && sr != 0) {
-			List<Integer> beatsArrayInt = new ArrayList<Integer>();
-
-			for( int i = 0; i < beatsArray.length(); i++) {
-				beatsArrayInt.add(beatsArray.optInt(i));
-			}
-
-			AudioTrio ret = new AudioTrio(beatsArrayInt, sr, is);
-
-			return(ret);
-
-		} else {
-			throw new NullPointerException();
-		}
+		return is;
 	}
 }
