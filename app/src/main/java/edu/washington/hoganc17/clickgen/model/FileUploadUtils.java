@@ -74,7 +74,7 @@ public class FileUploadUtils {
 
 		JSONArray beatsArray = beatsObj.optJSONArray("beats");
 		int sr = beatsObj.optInt("sr");
-		if(beatsArray != null && sr != 0) {
+		if(beatsArray != null && sr != 0 && is != null) {
 			List<Integer> beatsArrayInt = new ArrayList<Integer>();
 
 			for( int i = 0; i < beatsArray.length(); i++) {
