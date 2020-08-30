@@ -43,6 +43,13 @@ class UploadFragment : Fragment() {
         private const val GENERATE_FULL_URL = "http://174.21.95.118:5000/generateFull"
         private const val GENERATE_FULL_LOCAL_URL = "http://192.168.0.76:5000/generateFull"
 
+        private const val GENERATE_TWO_URL = "http://174.21.95.118:5000/generateTwo"
+        private const val GENERATE_TWO_LOCAL_URL = "http://192.168.0.76:5000/generateTwo"
+
+        private const val GET_FILE_URL = "http://174.21.95.118:5000/get"
+        private const val GET_FILE_LOCAL_URL = "http://192.168.0.76:5000/get"
+
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,11 +119,17 @@ class UploadFragment : Fragment() {
 
                 doAsync {
                     try {
-                        val trio = FileUploadUtils.generate(inputStream, GENERATE_FULL_LOCAL_URL, name)
-                        Log.i("CASHEW", "Got trio I think")
+                        val click_freq = 880.0f
+                        val click_dur = 0.5f
+                        val key = FileUploadUtils.generate(inputStream, GENERATE_TWO_LOCAL_URL, name, click_freq, click_dur)
+
+                        val songIs = FileUploadUtils.getFile(key, "converted", GET_FILE_LOCAL_URL)
+                        val clicksIs = FileUploadUtils.getFile(key, "clicks", GET_FILE_LOCAL_URL)
+
+                        Log.i("CASHEW", "Got key")
 
                         uiThread {
-                            onUploadListener?.onFileUploaded(trio)
+                            onUploadListener?.onFileUploaded(songIs, clicksIs)
                         }
 
                     } catch (ex: Exception) {
