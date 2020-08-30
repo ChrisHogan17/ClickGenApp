@@ -12,4 +12,5 @@
     <string name="app_description">MetroGnome generates a click track that plays along with the beats any song!</string>
     <string name="upload_instructions">Start by uploading a song of your choice in the supported formats of .mp3 or .wav</string>
     <string name="please_wait">Please wait while your file is processed by our team of gnomes. This may take a few minutes.</string>
+    <string name="click_frequency">Click Frequency (dB)</string>
 </resources>
