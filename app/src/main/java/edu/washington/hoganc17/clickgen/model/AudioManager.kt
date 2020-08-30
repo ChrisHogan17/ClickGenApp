@@ -130,12 +130,12 @@ class AudioManager {
                 }
             }
         }
-
-        var i = 0
-        while(newPositions.size < length) {
-            newPositions.add(0.toShort())
-            i++
-        }
+//
+//        var i = 0
+//        while(newPositions.size < length) {
+//            newPositions.add(0.toShort())
+//            i++
+//        }
         Log.i("fuck RFUHDJKF", newPositions.size.toString())
 
         return newPositions
