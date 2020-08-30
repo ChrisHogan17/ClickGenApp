@@ -102,13 +102,7 @@ class UploadFragment : Fragment() {
 
         if (requestCode == FILE_CHOICE_CODE && resultCode == Activity.RESULT_OK) {
             // Change setup UI to loading UI
-            btnUploadFile.visibility = View.GONE
-            tvAppDescription.visibility = View.GONE
-            tvUploadInstructions.visibility = View.GONE
-            spinnerFrequency.visibility = View.GONE
-            spinnerDuration.visibility = View.GONE
-            tvPleaseWait.visibility = View.VISIBLE
-            progressBar.visibility = View.VISIBLE
+            switchUi()
 
             val uri = data?.data
 
@@ -136,6 +130,20 @@ class UploadFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun switchUi(){
+        btnUploadFile.visibility = View.GONE
+        tvAppDescription.visibility = View.GONE
+        tvUploadInstructions.visibility = View.GONE
+        spinnerFrequency.visibility = View.GONE
+        spinnerDuration.visibility = View.GONE
+        tvClickSettings.visibility = View.GONE
+        tvFrequency.visibility = View.GONE
+        tvDuration.visibility = View.GONE
+
+        tvPleaseWait.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
     }
 
     // Code from: https://stackoverflow.com/questions/5568874/how-to-extract-the-file-name-from-uri-returned-from-intent-action-get-content/53170119
