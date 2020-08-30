@@ -120,9 +120,8 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                 doAsync {
                     try {
-                        val click_freq = 880.0f
-                        val click_dur = 0.5f
-                        val key = FileUploadUtils.generate(inputStream, GENERATE_TWO_LOCAL_URL, name, click_freq, click_dur)
+
+                        val key = FileUploadUtils.generate(inputStream, GENERATE_TWO_LOCAL_URL, name, clickFrequency, clickDuration)
 
                         val songIs = FileUploadUtils.getFile(key, "converted", GET_FILE_LOCAL_URL)
                         val clicksIs = FileUploadUtils.getFile(key, "clicks", GET_FILE_LOCAL_URL)
