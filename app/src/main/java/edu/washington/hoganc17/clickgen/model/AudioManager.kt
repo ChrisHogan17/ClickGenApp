@@ -18,9 +18,6 @@ class AudioManager {
 
         var outputIndex = 0
 
-        val trackOneMax = getAbsMax(trackOne)
-        val trackTwoMax = getAbsMax(trackTwo)
-
         for (i in trackTwo.indices) {
             // Numbers borrowed from Stack Overflow Code
             // Needs fine tuning as we don't really understand why the values are what they are
