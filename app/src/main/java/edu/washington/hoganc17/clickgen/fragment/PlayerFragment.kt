@@ -217,6 +217,13 @@ class PlayerFragment: Fragment() {
         val amplitudesTwo: ShortArray = w2.sampleAmplitudes
         trackTwo.close()
 
+        // times and sr are given by the server. click_freq and click_dur will be set by the user
+        // var click_freq = 880.0f
+        // var click_dur = 0.5f
+
+        // val clickAmplitudes = audioManager.generateClicktrack(times, sr, click_freq, click_dur)
+        // clickAmplitudes will be substituted in for amplitudesTwo or One
+
         val mixedTracks = audioManager.mixAmplitudesSixteenBit(amplitudesOne, amplitudesTwo)
 
         val pathName = context?.applicationContext?.filesDir?.path
