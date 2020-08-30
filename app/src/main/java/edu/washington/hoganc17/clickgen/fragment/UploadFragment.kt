@@ -85,6 +85,7 @@ class UploadFragment : Fragment() {
                     try {
                         val trio = FileUploadUtils.generate(inputStream, URL, name)
                         Log.i("HULK", trio.sr.toString())
+                        onUploadListener?.onFileUploaded(trio)
                     } catch (ex: Exception) {
                         when (ex) {
                             is IOException, is NullPointerException, is JSONException -> {

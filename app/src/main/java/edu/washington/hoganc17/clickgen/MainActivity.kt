@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import edu.washington.hoganc17.clickgen.fragment.PlayerFragment
 import edu.washington.hoganc17.clickgen.fragment.UploadFragment
+import edu.washington.hoganc17.clickgen.model.AudioTrio
 import edu.washington.hoganc17.clickgen.model.OnUploadListener
 
 
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         }
     }
 
-    override fun onFileUploaded() {
+    override fun onFileUploaded(trio: AudioTrio) {
         val playerFragment = PlayerFragment()
 
         supportFragmentManager
