@@ -3,8 +3,10 @@ package edu.washington.hoganc17.clickgen.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -55,7 +57,6 @@ class UploadFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnUploadFile.setOnClickListener {
-            //onUploadListener?.onFileUploaded()
             selectFile()
         }
     }
@@ -75,16 +76,15 @@ class UploadFragment : Fragment() {
 //            val theDust = resources.openRawResource(R.raw.bites_dust_16)
 
             val uri = data?.data
-            Log.i("HULK", uri.toString())
+
             uri?.let {
                 val inputStream: InputStream? = context?.contentResolver?.openInputStream(it)
-                Log.i("HULK", (inputStream == null).toString())
+                val name = getFileName(it)
 
                 doAsync {
                     try {
-                        val trio = FileUploadUtils.generate(inputStream, URL)
+                        val trio = FileUploadUtils.generate(inputStream, URL, name)
                         Log.i("HULK", trio.sr.toString())
-
                     } catch (ex: Exception) {
                         when (ex) {
                             is IOException, is NullPointerException, is JSONException -> {
@@ -93,9 +93,31 @@ class UploadFragment : Fragment() {
                             else -> throw ex
                         }
                     }
-
                 }
             }
         }
+    }
+
+    // Code from: https://stackoverflow.com/questions/5568874/how-to-extract-the-file-name-from-uri-returned-from-intent-action-get-content/53170119
+    private fun getFileName(uri: Uri): String? {
+        var result: String? = null
+        if (uri.scheme.equals("content")) {
+            val cursor: Cursor? = context?.contentResolver?.query(uri, null, null, null, null)
+            cursor.use { it ->
+                if (it != null && it.moveToFirst()) {
+                    result = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.getPath()
+            val cut = result?.lastIndexOf('/')
+            if (cut != -1) {
+                if (cut != null) {
+                    result = result?.substring(cut + 1)
+                }
+            }
+        }
+        return result
     }
 }
