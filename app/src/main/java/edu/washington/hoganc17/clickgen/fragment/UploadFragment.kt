@@ -101,6 +101,7 @@ class UploadFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == FILE_CHOICE_CODE && resultCode == Activity.RESULT_OK) {
+            // Change setup UI to loading UI
             btnUploadFile.visibility = View.GONE
             tvAppDescription.visibility = View.GONE
             tvUploadInstructions.visibility = View.GONE
