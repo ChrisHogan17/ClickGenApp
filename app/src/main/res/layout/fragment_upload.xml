@@ -35,7 +35,7 @@
     <TextView
         android:id="@+id/tvAppDescription"
         android:textSize="24sp"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorText"
         android:textAlignment="center"
         android:text="MetroGnome generates a click track to go along with any song!"
         android:layout_width="wrap_content"
