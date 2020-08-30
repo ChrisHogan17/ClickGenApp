@@ -1,6 +1,8 @@
 package edu.washington.hoganc17.clickgen.model
 
 import android.util.Log
+import kotlin.math.abs
+import kotlin.properties.Delegates
 
 
 class AudioManager {
@@ -15,7 +17,11 @@ class AudioManager {
             ByteArray(if (trackOne.size > trackTwo.size) trackTwo.size * 2 else trackOne.size * 2)
 
         var outputIndex = 0
-        for (i in trackOne.indices) {
+
+        val trackOneMax = getAbsMax(trackOne)
+        val trackTwoMax = getAbsMax(trackTwo)
+
+        for (i in trackTwo.indices) {
             // Numbers borrowed from Stack Overflow Code
             // Needs fine tuning as we don't really understand why the values are what they are
             val sample1 = trackOne[i] / 128.0f * 1.2f
@@ -139,6 +145,28 @@ class AudioManager {
         Log.i("fuck RFUHDJKF", newPositions.size.toString())
 
         return newPositions
+    }
+
+    private fun getAbsMax(track: ShortArray): Int? {
+        val max1 = track.max()
+        val min = track.min()
+
+        var max2: Int? = null
+        min?.let {
+            max2 = abs(it.toInt())
+        }
+        Log.i("PAIN", max1.toString())
+        Log.i("SUFFERING", max2.toString())
+
+        var absMax: Int? = 1;
+        if (max1 != null && max2 != null) {
+            absMax = if (max1 >= max2!!) {
+                max1.toInt()
+            } else {
+                max2
+            }
+        }
+        return absMax
     }
 }
 

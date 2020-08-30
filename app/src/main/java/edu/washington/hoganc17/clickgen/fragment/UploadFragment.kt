@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.fragment_upload.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.json.JSONException
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 
@@ -30,7 +32,11 @@ class UploadFragment : Fragment() {
     companion object {
         val TAG: String = UploadFragment::class.java.simpleName
         const val FILE_CHOICE_CODE = 4307
-        private const val URL = "http://174.21.95.118:5000/generate"
+        private const val CONVERT_SONG_URL = "http://174.21.95.118:5000/convert"
+        private const val CONVERT_SONG_LOCAL_URL = "http://192.168.0.76:5000/convert"
+        private const val GENERATE_CLICK_URL = "http://174.21.95.118:5000/generate"
+        private const val GENERATE_CLICK_LOCAL_URL = "http://192.168.0.76:5000/generate"
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +80,9 @@ class UploadFragment : Fragment() {
 
         if (requestCode == FILE_CHOICE_CODE && resultCode == Activity.RESULT_OK) {
             btnUploadFile.visibility = View.GONE
+            tvAppDescription.visibility = View.GONE
+            tvUploadInstructions.visibility = View.GONE
+            tvPleaseWait.visibility = View.VISIBLE
             progressBar.visibility = View.VISIBLE
 
             val uri = data?.data
@@ -84,11 +93,28 @@ class UploadFragment : Fragment() {
 
                 doAsync {
                     try {
-                        val trio = FileUploadUtils.generate(inputStream, URL, name)
-                        Log.i("HULK", trio.sr.toString())
-                        uiThread {
-                            onUploadListener?.onFileUploaded(trio)
+                        val songStream = FileUploadUtils.requestFile(inputStream, CONVERT_SONG_LOCAL_URL, name)
+                        Log.i("CASHEW", "Got songStream I think")
+
+                        val baos = ByteArrayOutputStream()
+
+                        val buffer = ByteArray(1024)
+                        var len: Int
+                        while (songStream.read(buffer).also { len = it } > -1) {
+                            baos.write(buffer, 0, len)
                         }
+                        baos.flush()
+
+                        val newSongStream: InputStream = ByteArrayInputStream(baos.toByteArray())
+                        val tempSongStream: InputStream = ByteArrayInputStream(baos.toByteArray())
+
+                        val clickStream = FileUploadUtils.requestFile(tempSongStream, GENERATE_CLICK_LOCAL_URL, "$name.wav")
+                        Log.i("CASHEW","Got ClickFile")
+
+                        uiThread {
+                            onUploadListener?.onFileUploaded(newSongStream, clickStream)
+                        }
+
                     } catch (ex: Exception) {
                         when (ex) {
                             is IOException, is NullPointerException, is JSONException -> {

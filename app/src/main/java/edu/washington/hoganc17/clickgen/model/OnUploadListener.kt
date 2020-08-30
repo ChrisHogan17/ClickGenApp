@@ -1,5 +1,7 @@
 package edu.washington.hoganc17.clickgen.model
 
+import java.io.InputStream
+
 interface OnUploadListener {
-    fun onFileUploaded(trio: AudioTrio)
+    fun onFileUploaded(songStream: InputStream, clickStream: InputStream)
 }
