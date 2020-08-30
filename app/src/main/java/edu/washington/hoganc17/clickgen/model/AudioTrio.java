@@ -1,18 +1,22 @@
 package edu.washington.hoganc17.clickgen.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 
 public class AudioTrio {
 
 	private List<Integer> beatsArray;
 	private int sr;
-	private InputStream is;
+	private InputStream inputStream;
 
 	public AudioTrio(List<Integer> beatsArray, int sr, InputStream is) {
 		this.beatsArray = beatsArray;
 		this.sr = sr;
-		this.is = is;
+		this.inputStream = is;
 	}
 
 	public List<Integer> getBeatsArray() {
@@ -23,7 +27,7 @@ public class AudioTrio {
 		return sr;
 	}
 
-	public InputStream getIs() {
-		return is;
+	public InputStream getInputStream() {
+		return inputStream;
 	}
 }

@@ -17,6 +17,7 @@ import edu.washington.hoganc17.clickgen.model.FileUploadUtils
 import edu.washington.hoganc17.clickgen.model.OnUploadListener
 import kotlinx.android.synthetic.main.fragment_upload.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import org.json.JSONException
 import java.io.IOException
 import java.io.InputStream
@@ -85,7 +86,9 @@ class UploadFragment : Fragment() {
                     try {
                         val trio = FileUploadUtils.generate(inputStream, URL, name)
                         Log.i("HULK", trio.sr.toString())
-                        onUploadListener?.onFileUploaded(trio)
+                        uiThread {
+                            onUploadListener?.onFileUploaded(trio)
+                        }
                     } catch (ex: Exception) {
                         when (ex) {
                             is IOException, is NullPointerException, is JSONException -> {

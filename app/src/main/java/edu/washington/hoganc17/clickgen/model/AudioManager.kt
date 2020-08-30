@@ -77,7 +77,7 @@ class AudioManager {
         val delta = (logMax - logMin) / logBins
         var deltaTot = 0.0
         var spacedVals = FloatArray(logBins)
-        for (i in 0..logBins) {
+        for (i in 0 until logBins) {
             spacedVals[i] = Math.pow(logarithmicBase, logMin + deltaTot).toFloat()
             deltaTot += delta
         }

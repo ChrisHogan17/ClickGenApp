@@ -13,6 +13,7 @@ import com.musicg.wave.Wave
 import edu.washington.hoganc17.clickgen.model.AudioManager
 import edu.washington.hoganc17.clickgen.model.MyWaveHeader
 import edu.washington.hoganc17.clickgen.R
+import edu.washington.hoganc17.clickgen.model.AudioTrio
 import kotlinx.android.synthetic.main.fragment_player.*
 import java.io.File
 import java.io.FileOutputStream
