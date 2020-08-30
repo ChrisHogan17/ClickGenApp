@@ -1,5 +1,7 @@
 package edu.washington.hoganc17.clickgen.model
 
+import android.util.Log
+
 
 class AudioManager {
 
@@ -60,35 +62,32 @@ class AudioManager {
         return output
     }
 
-    fun generateClicktrack(times: IntArray, sr: Float, click_freq: Float, click_dur: Float): ShortArray {
+    fun generateClicktrack(times: IntArray, sr: Float, click_freq: Float, click_dur: Float, length: Int): ShortArray {
         var angular_freq: Double = 2 * Math.PI * click_freq / sr.toDouble()
-        var logBins: Int = Math.round(sr.toFloat() * click_dur).toInt()
+        var logBins: Int = Math.round(sr * click_dur).toInt()
         var spacedVals: FloatArray = generateLogSpace(0, -10, logBins, 2.0)
         spacedVals = arange(spacedVals, angular_freq)
 
-        var clickTrack: Array<Short> = arrayOf<Short>()
-        placeClicks(spacedVals, sr, times).toArray(clickTrack)
-        return clickTrack.toShortArray()
+        var clickArrayList: ArrayList<Short> = placeClicks(spacedVals, sr, times, length)
+        var clickArray: Array<Short> = clickArrayList.toTypedArray()
+
+        return clickArray.toShortArray()
     }
 
     fun generateLogSpace(min: Int, max: Int, logBins: Int, logarithmicBase: Double): FloatArray {
-        val logMin = Math.log(min.toDouble())
-        val logMax = Math.log(max.toDouble())
-        val delta = (logMax - logMin) / logBins
+        val delta = ((max - min) / logBins).toDouble()
         var deltaTot = 0.0
-        var spacedVals = FloatArray(logBins)
+        val spacedVals = FloatArray(logBins)
         for (i in 0 until logBins) {
-            spacedVals[i] = Math.pow(logarithmicBase, logMin + deltaTot).toFloat()
+            spacedVals[i] = Math.pow(logarithmicBase, min + deltaTot).toFloat()
             deltaTot += delta
         }
-
         return spacedVals
     }
 
     fun arange(spacedVals: FloatArray, angular_freq: Double): FloatArray {
         for (i in 0 until spacedVals.size) {
-            spacedVals[i] =
-                spacedVals.get(i) * Math.sin(i * angular_freq).toFloat()
+            spacedVals[i] = spacedVals.get(i) * Math.sin(i * angular_freq).toFloat()
         }
         return spacedVals
     }
@@ -100,16 +99,28 @@ class AudioManager {
         return times
     }
 
-    fun placeClicks(spacedVals: FloatArray, sr: Float, times: IntArray): ArrayList<Short> {
+    fun placeClicks(spacedVals: FloatArray, sr: Float, times: IntArray, length: Int): ArrayList<Short> {
         var positions: IntArray = timeToSamples(sr, times)
-        var newPositions: ArrayList<Short> = arrayListOf<Short>()
-        var sentinel = positions.size
+        var positionsFixed: IntArray = IntArray(positions.size)
 
-        for (i in 0 until sentinel) {
-            var end = i + spacedVals.size;
-            if (end >= spacedVals.size) {
+        var c = 0
+        for(i in 0 until positions.size) {
+            if(positions[i] > length) {
+                c--;
+            } else {
+                positionsFixed[c] = positions[i]
+                c++;
+            }
+        }
+        positions = positionsFixed
+
+        var newPositions: ArrayList<Short> = arrayListOf<Short>()
+
+        for (start in positions) {
+            var end = start + spacedVals.size;
+            if (end >= length) {
                 //placing a click but just shortened to fit length
-                for (k in 0 until spacedVals.size - i) {
+                for (k in 0 until length - start) {
                     newPositions.add(spacedVals[k].toShort())
                 }
             } else {
@@ -119,6 +130,13 @@ class AudioManager {
                 }
             }
         }
+
+        var i = 0
+        while(newPositions.size < length) {
+            newPositions.add(0.toShort())
+            i++
+        }
+        Log.i("fuck RFUHDJKF", newPositions.size.toString())
 
         return newPositions
     }
