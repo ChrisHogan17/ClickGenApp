@@ -2,7 +2,6 @@ package edu.washington.hoganc17.clickgen.model
 
 import android.util.Log
 import kotlin.math.abs
-import kotlin.properties.Delegates
 
 
 class AudioManager {
@@ -97,29 +96,19 @@ class AudioManager {
 
     fun timeToSamples(sr: Float, times: IntArray): IntArray {
         for (i in 0 until times.size) {
-            times[i] = (times[i].toFloat() * sr).toInt()
+            times[i] = (times[i].toFloat() * 512).toInt()
         }
         return times
     }
 
     fun placeClicks(spacedVals: FloatArray, sr: Float, times: IntArray, length: Int): ArrayList<Short> {
         var positions: IntArray = timeToSamples(sr, times)
-        var positionsFixed: IntArray = IntArray(positions.size)
-
-        var c = 0
-        for(i in 0 until positions.size) {
-            if(positions[i] > length) {
-                c--;
-            } else {
-                positionsFixed[c] = positions[i]
-                c++;
-            }
-        }
-        positions = positionsFixed
-
         var newPositions: ArrayList<Short> = arrayListOf<Short>()
 
-        for (start in positions) {
+        val sentinel: Int = positions.size
+
+        for (i in 0 until sentinel) {
+            var start = positions.get(i)
             var end = start + spacedVals.size;
             if (end >= length) {
                 //placing a click but just shortened to fit length
@@ -133,15 +122,10 @@ class AudioManager {
                 }
             }
         }
-//
-//        var i = 0
-//        while(newPositions.size < length) {
-//            newPositions.add(0.toShort())
-//            i++
-//        }
-        Log.i("fuck RFUHDJKF", newPositions.size.toString())
 
-        return newPositions
+        var ret: ArrayList<Short> = newPositions.subList(0, length/2) as ArrayList<Short>
+
+        return ret
     }
 
     private fun getAbsMax(track: ShortArray): Int? {
