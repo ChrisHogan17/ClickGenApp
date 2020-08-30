@@ -1,19 +1,10 @@
 package edu.washington.hoganc17.clickgen
 
-import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
-import android.widget.SeekBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.musicg.wave.Wave
 import edu.washington.hoganc17.clickgen.fragment.PlayerFragment
 import edu.washington.hoganc17.clickgen.fragment.UploadFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
+import edu.washington.hoganc17.clickgen.model.OnUploadListener
 
 
 // Code for this media player was created with help from the example at:
