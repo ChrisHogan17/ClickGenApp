@@ -37,7 +37,7 @@ public class FileUploadUtils {
 //		}
 //	}
 
-	public static AudioTrio generate(InputStream input, String url) throws IOException, NullPointerException, JSONException {
+	public static AudioTrio generate(InputStream input, String url, String filename) throws IOException, NullPointerException, JSONException {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpPost uploadFile = new HttpPost(url);
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
@@ -46,7 +46,7 @@ public class FileUploadUtils {
 				"audioFile",
 				input,
 				ContentType.APPLICATION_OCTET_STREAM,
-				"upload.wav"
+				filename
 		);
 
 		HttpEntity multipart = builder.build();
