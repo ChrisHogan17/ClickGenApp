@@ -10,12 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import edu.washington.hoganc17.clickgen.model.OnUploadListener
 import edu.washington.hoganc17.clickgen.R
-import edu.washington.hoganc17.clickgen.model.AudioPair
 import edu.washington.hoganc17.clickgen.model.FileUploadUtils
+import edu.washington.hoganc17.clickgen.model.OnUploadListener
 import kotlinx.android.synthetic.main.fragment_upload.*
-import java.io.FileInputStream
+import org.jetbrains.anko.doAsync
+import org.json.JSONException
+import java.io.IOException
+import java.io.InputStream
 
 
 class UploadFragment : Fragment() {
@@ -70,14 +72,30 @@ class UploadFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == FILE_CHOICE_CODE && resultCode == Activity.RESULT_OK) {
-             val theDust = resources.openRawResource(R.raw.bites_dust_16)
-//            val uri = data?.data?.path
-//            uri?.let {
-//                Log.i("JOSUKE", it)
-//            }*/
+//            val theDust = resources.openRawResource(R.raw.bites_dust_16)
 
-            //val test = FileUploadUtils.generate(theDust, URL)
-            //Log.i("GNOME", test.sr.toString())
+            val uri = data?.data
+            Log.i("HULK", uri.toString())
+            uri?.let {
+                val inputStream: InputStream? = context?.contentResolver?.openInputStream(it)
+                Log.i("HULK", (inputStream == null).toString())
+
+                doAsync {
+                    try {
+                        val trio = FileUploadUtils.generate(inputStream, URL)
+                        Log.i("HULK", trio.sr.toString())
+
+                    } catch (ex: Exception) {
+                        when (ex) {
+                            is IOException, is NullPointerException, is JSONException -> {
+                                Log.i("HULK", ex.toString())
+                            }
+                            else -> throw ex
+                        }
+                    }
+
+                }
+            }
         }
     }
 }

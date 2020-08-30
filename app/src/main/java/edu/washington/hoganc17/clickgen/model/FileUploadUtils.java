@@ -46,7 +46,7 @@ public class FileUploadUtils {
 				"audioFile",
 				input,
 				ContentType.APPLICATION_OCTET_STREAM,
-				"upload.wav"
+				"upload.mp3"
 		);
 
 		HttpEntity multipart = builder.build();
