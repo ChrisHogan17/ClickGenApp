@@ -1,4 +1,4 @@
-package edu.washington.hoganc17.clickgen;
+package edu.washington.hoganc17.clickgen.model;
 
 import java.io.IOException;
 import java.io.InputStream;

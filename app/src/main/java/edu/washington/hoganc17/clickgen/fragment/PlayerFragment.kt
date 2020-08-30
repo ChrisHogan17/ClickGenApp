@@ -4,15 +4,14 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.musicg.wave.Wave
-import edu.washington.hoganc17.clickgen.AudioManager
-import edu.washington.hoganc17.clickgen.MyWaveHeader
+import edu.washington.hoganc17.clickgen.model.AudioManager
+import edu.washington.hoganc17.clickgen.model.MyWaveHeader
 import edu.washington.hoganc17.clickgen.R
 import kotlinx.android.synthetic.main.fragment_player.*
 import java.io.File

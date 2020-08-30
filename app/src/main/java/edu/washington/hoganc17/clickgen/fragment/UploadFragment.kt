@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import edu.washington.hoganc17.clickgen.OnUploadListener
+import edu.washington.hoganc17.clickgen.model.OnUploadListener
 import edu.washington.hoganc17.clickgen.R
 import kotlinx.android.synthetic.main.fragment_upload.*
 
