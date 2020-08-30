@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ class PlayerFragment: Fragment() {
 
     companion object {
         val TAG: String = PlayerFragment::class.java.simpleName
+        val OUT_BYTES = "OUT_BYTES"
     }
 
     private lateinit var songPlayer: MediaPlayer
@@ -36,11 +38,26 @@ class PlayerFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val mixedTracks = arguments?.getByteArray(OUT_BYTES)
 
-        val theDust = resources.openRawResource(R.raw.bites_dust_16)
-        val theClick = resources.openRawResource(R.raw.bites_click_16)
+        mixedTracks?.let {track ->
 
-        createTrack(theDust, theClick)
+            val pathName = context?.applicationContext?.filesDir?.path
+
+            val f = File("$pathName/mixed_sounds.wav")
+            if (f.exists()) {
+                f.delete()
+            }
+
+            val fo = FileOutputStream(f)
+
+            val mwh = MyWaveHeader(track.size)
+            mwh.write(fo)
+
+            fo.write(track)
+            fo.flush()
+            fo.close()
+        }
     }
 
     override fun onAttach(context: Context) {
