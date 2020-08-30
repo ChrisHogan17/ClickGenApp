@@ -223,40 +223,4 @@ class PlayerFragment: Fragment() {
         duration += sec
         return duration
     }
-
-    private fun createTrack(trackOne: InputStream, trackTwo: InputStream) {
-
-        val w1 = Wave(trackOne)
-        val amplitudesOne: ShortArray = w1.sampleAmplitudes
-        trackOne.close()
-
-        val w2 = Wave(trackTwo)
-        val amplitudesTwo: ShortArray = w2.sampleAmplitudes
-        trackTwo.close()
-
-        // times and sr are given by the server. click_freq and click_dur will be set by the user
-        // var click_freq = 880.0f
-        // var click_dur = 0.5f
-
-        // val clickAmplitudes = audioManager.generateClicktrack(times, sr, click_freq, click_dur)
-        // clickAmplitudes will be substituted in for amplitudesTwo or One
-
-        val mixedTracks = audioManager.mixAmplitudesSixteenBit(amplitudesOne, amplitudesTwo)
-
-        val pathName = context?.applicationContext?.filesDir?.path
-
-        val f = File("$pathName/mixed_sounds.wav")
-        if (f.exists()) {
-            f.delete()
-        }
-
-        val fo = FileOutputStream(f)
-
-        val mwh = MyWaveHeader(mixedTracks.size)
-        mwh.write(fo)
-
-        fo.write(mixedTracks)
-        fo.flush()
-        fo.close()
-    }
 }
