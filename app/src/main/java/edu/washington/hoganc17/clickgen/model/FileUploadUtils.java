@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,52 +36,55 @@ public class FileUploadUtils {
 //			System.out.println("Did not get a valid resposne.");
 //		}
 //	}
-	
-	public static AudioPair generate(FileInputStream input, String url) throws IOException, NullPointerException, JSONException {
+
+	public static AudioTrio generate(InputStream input, String url) throws IOException, NullPointerException, JSONException {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpPost uploadFile = new HttpPost(url);
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-			
+
 		builder.addBinaryBody(
-		    "audioFile",
-		    input,
-		    ContentType.APPLICATION_OCTET_STREAM,
-		    "upload.wav"
+				"audioFile",
+				input,
+				ContentType.APPLICATION_OCTET_STREAM,
+				"upload.wav"
 		);
-			
+
 		HttpEntity multipart = builder.build();
 		uploadFile.setEntity(multipart);
 		CloseableHttpResponse response = httpClient.execute(uploadFile);
 		HttpEntity responseEntity = response.getEntity();
 		Header[] responseHeaders = response.getHeaders();
-		
-		File saveFile = new File("./converted/converted.wav");
-		
+
+		File saveFile = File.createTempFile("converted", "wav");
+
 		if (responseEntity != null) {
-		       try (FileOutputStream outstream = new FileOutputStream(saveFile)) {
-		       	responseEntity.writeTo(outstream);
-		       }
-		   }
-		
+			try (FileOutputStream outstream = new FileOutputStream(saveFile)) {
+				responseEntity.writeTo(outstream);
+			}
+		}
+
+		InputStream is = new FileInputStream(saveFile);
+		saveFile.delete();
+
 		JSONObject beatsObj = null;
 		for( Header h : responseHeaders ) {
 			if(h.getName().equals("X-Beats"))
 				beatsObj = new JSONObject(h.getValue());
 		}
-		
+
 		JSONArray beatsArray = beatsObj.optJSONArray("beats");
 		int sr = beatsObj.optInt("sr");
 		if(beatsArray != null && sr != 0) {
 			List<Integer> beatsArrayInt = new ArrayList<Integer>();
-		
+
 			for( int i = 0; i < beatsArray.length(); i++) {
 				beatsArrayInt.add(beatsArray.optInt(i));
 			}
-			
-			AudioPair ret = new AudioPair(beatsArrayInt, sr);
-			
+
+			AudioTrio ret = new AudioTrio(beatsArrayInt, sr, is);
+
 			return(ret);
-			
+
 		} else {
 			throw new NullPointerException();
 		}
