@@ -17,7 +17,7 @@ import java.io.InputStream
 // Code for this media player was created with help from the example at:
 // https://www.javatpoint.com/kotlin-android-media-player
 
-class MainActivity : AppCompatActivity(), OnUploadListener, AdapterView.OnItemSelectedListener {
+class MainActivity : AppCompatActivity(), OnUploadListener {
 
     private val audioManager = AudioManager()
     private var clickFrequency = 880.0f
@@ -114,19 +114,5 @@ class MainActivity : AppCompatActivity(), OnUploadListener, AdapterView.OnItemSe
             .add(R.id.fragContainer, playerFragment, PlayerFragment.TAG)
             .addToBackStack(PlayerFragment.TAG)
             .commit()
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val itemContent = parent?.getItemAtPosition(position).toString()
-        val numericalVal = itemContent.split(" ")[0]
-        Log.i("BRIT", numericalVal)
-        if(parent?.id == R.id.spinnerDuration) {
-            clickDuration = numericalVal.toFloat()
-        } else if (parent?.id == R.id.spinnerFrequency) {
-            clickFrequency = numericalVal.toFloat()
-        }
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 }

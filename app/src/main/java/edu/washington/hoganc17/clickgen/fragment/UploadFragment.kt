@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import edu.washington.hoganc17.clickgen.MainActivity
@@ -27,9 +28,11 @@ import java.io.IOException
 import java.io.InputStream
 
 
-class UploadFragment : Fragment() {
+class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private var onUploadListener: OnUploadListener? = null
+    private var clickFrequency = 880.0f
+    private var clickDuration = 0.5f
 
     companion object {
         val TAG: String = UploadFragment::class.java.simpleName
@@ -84,15 +87,13 @@ class UploadFragment : Fragment() {
             freqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerFrequency.adapter = freqAdapter
 
-            spinnerFrequency.onItemSelectedListener = it as MainActivity
+            spinnerFrequency.onItemSelectedListener = this
 
             val durationAdapter = ArrayAdapter.createFromResource(it, R.array.durations, android.R.layout.simple_spinner_item)
             durationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinnerDuration.adapter = durationAdapter
 
-            spinnerDuration.onItemSelectedListener = it
-
-
+            spinnerDuration.onItemSelectedListener = this
         }
     }
 
@@ -143,6 +144,20 @@ class UploadFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val itemContent = parent?.getItemAtPosition(position).toString()
+        val numericalVal = itemContent.split(" ")[0]
+        Log.i("BRIT", numericalVal)
+        if(parent?.id == R.id.spinnerDuration) {
+            clickDuration = numericalVal.toFloat()
+        } else if (parent?.id == R.id.spinnerFrequency) {
+            clickFrequency = numericalVal.toFloat()
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 
     private fun switchUi(){
