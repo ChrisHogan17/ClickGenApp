@@ -55,7 +55,19 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         val length = songSampleAmps.size
 
         val clickSampleAmps = audioManager.generateClicktrack(times, sampleRate, clickFreq, clickDur, length)
-        val mixedTracks = audioManager.mixAmplitudesSixteenBit(clickSampleAmps, clickSampleAmps)
+
+        val doubledClickAmps = ShortArray(songSampleAmps.size)
+        var c = 0
+        for (i in clickSampleAmps.indices) {
+            doubledClickAmps[c] = clickSampleAmps[i]
+            c += 2
+        }
+
+        Log.i("AGONY", songSampleAmps.size.toString())
+        Log.i("AGONY", clickSampleAmps.size.toString())
+        Log.i("AGONY", doubledClickAmps.size.toString())
+
+        val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, doubledClickAmps)
 
         val bundle = Bundle()
         bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedTracks)
@@ -82,16 +94,16 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         val clickSampleAmps: ShortArray = w2.sampleAmplitudes
         clickStream.close()
 
-        val shorty = ShortArray(songSampleAmps.size)
+        val doubledClickAmps = ShortArray(songSampleAmps.size)
         var c = 0
         for (i in clickSampleAmps.indices) {
-            shorty[c] = clickSampleAmps[i]
+            doubledClickAmps[c] = clickSampleAmps[i]
             c += 2
         }
 
         Log.i("AGONY", songSampleAmps.size.toString())
-        Log.i("AGONY", shorty.size.toString())
-        val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, shorty)
+        Log.i("AGONY", doubledClickAmps.size.toString())
+        val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, doubledClickAmps)
 
         val bundle = Bundle()
         bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedTracks)

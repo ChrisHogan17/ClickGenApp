@@ -34,8 +34,12 @@ class UploadFragment : Fragment() {
         const val FILE_CHOICE_CODE = 4307
         private const val CONVERT_SONG_URL = "http://174.21.95.118:5000/convert"
         private const val CONVERT_SONG_LOCAL_URL = "http://192.168.0.76:5000/convert"
+
         private const val GENERATE_CLICK_URL = "http://174.21.95.118:5000/generate"
         private const val GENERATE_CLICK_LOCAL_URL = "http://192.168.0.76:5000/generate"
+
+        private const val GENERATE_FULL_URL = "http://174.21.95.118:5000/generateFull"
+        private const val GENERATE_FULL_LOCAL_URL = "http://192.168.0.76:5000/generateFull"
 
     }
 
@@ -82,6 +86,8 @@ class UploadFragment : Fragment() {
             btnUploadFile.visibility = View.GONE
             tvAppDescription.visibility = View.GONE
             tvUploadInstructions.visibility = View.GONE
+            etDuration.visibility = View.GONE
+            etFrequency.visibility = View.GONE
             tvPleaseWait.visibility = View.VISIBLE
             progressBar.visibility = View.VISIBLE
 
@@ -93,26 +99,11 @@ class UploadFragment : Fragment() {
 
                 doAsync {
                     try {
-                        val songStream = FileUploadUtils.requestFile(inputStream, CONVERT_SONG_LOCAL_URL, name)
-                        Log.i("CASHEW", "Got songStream I think")
-
-                        val baos = ByteArrayOutputStream()
-
-                        val buffer = ByteArray(1024)
-                        var len: Int
-                        while (songStream.read(buffer).also { len = it } > -1) {
-                            baos.write(buffer, 0, len)
-                        }
-                        baos.flush()
-
-                        val newSongStream: InputStream = ByteArrayInputStream(baos.toByteArray())
-                        val tempSongStream: InputStream = ByteArrayInputStream(baos.toByteArray())
-
-                        val clickStream = FileUploadUtils.requestFile(tempSongStream, GENERATE_CLICK_LOCAL_URL, "$name.wav")
-                        Log.i("CASHEW","Got ClickFile")
+                        val trio = FileUploadUtils.generate(inputStream, GENERATE_FULL_LOCAL_URL, name)
+                        Log.i("CASHEW", "Got trio I think")
 
                         uiThread {
-                            onUploadListener?.onFileUploaded(newSongStream, clickStream)
+                            onUploadListener?.onFileUploaded(trio)
                         }
 
                     } catch (ex: Exception) {

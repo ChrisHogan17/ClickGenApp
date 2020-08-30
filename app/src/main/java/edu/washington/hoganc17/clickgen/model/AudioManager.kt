@@ -1,6 +1,8 @@
 package edu.washington.hoganc17.clickgen.model
 
 import android.util.Log
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 
@@ -67,7 +69,7 @@ class AudioManager {
     fun generateClicktrack(times: IntArray, sr: Float, click_freq: Float, click_dur: Float, length: Int): ShortArray {
         var angular_freq: Double = 2 * Math.PI * click_freq / sr.toDouble()
         var logBins: Int = Math.round(sr * click_dur).toInt()
-        var spacedVals: FloatArray = generateLogSpace(0, -10, logBins, 2.0)
+        var spacedVals: FloatArray = generateLogSpace(0, -1000, logBins, 2.0)
         spacedVals = arange(spacedVals, angular_freq)
 
         var clickArrayList: ArrayList<Short> = placeClicks(spacedVals, sr, times, length)
@@ -103,13 +105,14 @@ class AudioManager {
 
     fun placeClicks(spacedVals: FloatArray, sr: Float, times: IntArray, length: Int): ArrayList<Short> {
         var positions: IntArray = timeToSamples(sr, times)
+        Log.i("HELP", "Random sample: " + positions[200].toString() + " Size:" + positions.size)
         var newPositions: ArrayList<Short> = arrayListOf<Short>()
 
         val sentinel: Int = positions.size
 
         for (i in 0 until sentinel) {
             var start = positions.get(i)
-            var end = start + spacedVals.size;
+            var end = start + spacedVals.size
             if (end >= length) {
                 //placing a click but just shortened to fit length
                 for (k in 0 until length - start) {
@@ -117,14 +120,14 @@ class AudioManager {
                 }
             } else {
                 //appending clicks onto the click signal newPositions
-                for (k in 0 until spacedVals.size) {
-                    newPositions.add(spacedVals[k].toShort())
+                for (amplitude in spacedVals) {
+                    newPositions.add(amplitude.toShort())
                 }
             }
         }
 
-        var ret: ArrayList<Short> = newPositions.subList(0, length/2) as ArrayList<Short>
-
+        Log.i("HELP", newPositions.toString())
+        var ret: ArrayList<Short> = ArrayList<Short>(newPositions.subList(0, length/2))
         return ret
     }
 
