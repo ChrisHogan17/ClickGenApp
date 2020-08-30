@@ -42,10 +42,6 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
     override fun onFileUploaded(songInputStream: InputStream, clickInputStream: InputStream) {
         Log.i("HULK", "Activity")
 
-        val times = trio.beatsArray.toIntArray()
-        val sampleRate = trio.sr.toFloat()
-        val songInputStream = trio.inputStream
-
         val w1 = Wave(songInputStream)
         val songSampleAmps: ShortArray = w1.sampleAmplitudes
         songInputStream.close()
