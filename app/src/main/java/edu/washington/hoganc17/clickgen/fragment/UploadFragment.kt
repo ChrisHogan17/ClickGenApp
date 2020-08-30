@@ -3,14 +3,19 @@ package edu.washington.hoganc17.clickgen.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import edu.washington.hoganc17.clickgen.model.OnUploadListener
 import edu.washington.hoganc17.clickgen.R
+import edu.washington.hoganc17.clickgen.model.AudioPair
+import edu.washington.hoganc17.clickgen.model.FileUploadUtils
 import kotlinx.android.synthetic.main.fragment_upload.*
+import java.io.FileInputStream
 
 
 class UploadFragment : Fragment() {
@@ -21,7 +26,7 @@ class UploadFragment : Fragment() {
     companion object {
         val TAG: String = UploadFragment::class.java.simpleName
         const val FILE_CHOICE_CODE = 4307
-        private const val BASE_URL = "http://174.21.95.118:5000/"
+        private const val URL = "http://174.21.95.118:5000/generate"
     }
 
 
@@ -48,8 +53,8 @@ class UploadFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnUploadFile.setOnClickListener {
-            onUploadListener?.onFileUploaded()
-            //selectFile()
+            //onUploadListener?.onFileUploaded()
+            selectFile()
         }
     }
 
@@ -65,7 +70,14 @@ class UploadFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == FILE_CHOICE_CODE && resultCode == Activity.RESULT_OK) {
+             val theDust = resources.openRawResource(R.raw.bites_dust_16)
+//            val uri = data?.data?.path
+//            uri?.let {
+//                Log.i("JOSUKE", it)
+//            }*/
 
+            //val test = FileUploadUtils.generate(theDust, URL)
+            //Log.i("GNOME", test.sr.toString())
         }
     }
 }
