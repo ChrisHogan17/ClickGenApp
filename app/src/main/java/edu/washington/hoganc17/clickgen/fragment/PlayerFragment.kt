@@ -30,7 +30,6 @@ class PlayerFragment: Fragment() {
     private lateinit var songPlayer: MediaPlayer
     private lateinit var runnable: Runnable
     private var handler: Handler = Handler()
-    private val audioManager = AudioManager()
 
     private var paused = false
     private var stopped = true
