@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
     private var clickDuration = 0.5f
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportActionBar?.hide()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -33,14 +34,6 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
             .beginTransaction()
             .add(R.id.fragContainer, uploadFragment, UploadFragment.TAG)
             .commit()
-
-        supportFragmentManager.addOnBackStackChangedListener {
-            if (supportFragmentManager.backStackEntryCount > 1) {
-                supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            } else {
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            }
-        }
     }
 
     // Process for generating the click track on the application
