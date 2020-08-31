@@ -59,11 +59,6 @@ class PlayerFragment: Fragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-    }
-
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -96,7 +91,7 @@ class PlayerFragment: Fragment() {
                             progress: Int,
                             fromUser: Boolean
                     ) {
-                        if (fromUser) {
+                        if (fromUser && !stopped) {
                             songPlayer.seekTo(progress * 1000)
                         }
                     }
@@ -117,7 +112,9 @@ class PlayerFragment: Fragment() {
                             fromUser: Boolean
                     ) {
                         val volumeNum = progress / 100f
-                        songPlayer.setVolume(volumeNum, volumeNum)
+                        if (!stopped) {
+                            songPlayer.setVolume(volumeNum, volumeNum)
+                        }
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {
