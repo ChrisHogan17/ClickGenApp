@@ -49,6 +49,9 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
         private const val GENERATE_TWO_URL = "http://174.21.95.118:5000/generateTwo"
         private const val GENERATE_TWO_LOCAL_URL = "http://192.168.0.76:5000/generateTwo"
 
+        private const val GENERATE_MIXED_URL = "http://174.21.95.118:5000/generateMixed"
+        private const val GENERATE_MIXED_LOCAL_URL = "http://192.168.0.76:5000/generateMixed"
+
         private const val GET_FILE_URL = "http://174.21.95.118:5000/get"
         private const val GET_FILE_LOCAL_URL = "http://192.168.0.76:5000/get"
 
@@ -121,15 +124,11 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 doAsync {
                     try {
 
-                        val key = FileUploadUtils.generate(inputStream, GENERATE_TWO_LOCAL_URL, name, clickFrequency, clickDuration)
-
-                        val songIs = FileUploadUtils.getFile(key, "converted", GET_FILE_LOCAL_URL)
-                        val clicksIs = FileUploadUtils.getFile(key, "clicks", GET_FILE_LOCAL_URL)
-
-                        Log.i("CASHEW", "Got key")
+                        val mixedInputStream: InputStream = FileUploadUtils.requestFile(inputStream, GENERATE_MIXED_LOCAL_URL, name, clickFrequency, clickDuration)
+                        Log.i("CASHEW", "Got mixed auduio")
 
                         uiThread {
-                            onUploadListener?.onFileUploaded(songIs, clicksIs)
+                            onUploadListener?.onFileUploaded(mixedInputStream)
                         }
 
                     } catch (ex: Exception) {

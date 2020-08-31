@@ -41,9 +41,18 @@ public class FileUploadUtils {
 //		}
 //	}
 
-	public static InputStream requestFile(InputStream input, String url, String filename) throws IOException, NullPointerException {
+	public static InputStream requestFile(InputStream input, String url, String filename, float click_freq, float click_dur) throws IOException, NullPointerException, URISyntaxException {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
-		HttpPost uploadFile = new HttpPost(url);
+		URIBuilder uriBuilder = new URIBuilder(url);
+
+
+		ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+		postParameters.add(new BasicNameValuePair("click_freq", click_freq + ""));
+		postParameters.add(new BasicNameValuePair("click_dur", click_dur + ""));
+
+		uriBuilder.addParameters(postParameters);
+
+		HttpPost uploadFile = new HttpPost(uriBuilder.build());
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 
 		builder.addBinaryBody(
