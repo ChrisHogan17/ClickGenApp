@@ -130,11 +130,14 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
 
     override fun onBackPressed() {
         // If there is a playerFragment running, stop it gracefully before going back to avoid crashing
-        val frag = supportFragmentManager.findFragmentByTag(PlayerFragment.TAG) as? PlayerFragment
+        val playerFragment = supportFragmentManager.findFragmentByTag(PlayerFragment.TAG) as? PlayerFragment
 
-        frag?.let {
-            it.stopPlayer()
-            Log.i("BLITZ", "CRANK")
+        playerFragment?.let { playFrag ->
+            playFrag.stopPlayer()
+
+            // If there is an upload fragment (which there should be) reset it to normal
+            val uploadFragment = supportFragmentManager.findFragmentByTag(UploadFragment.TAG) as? UploadFragment
+            uploadFragment?.setUploadUi()
         }
 
         super.onBackPressed()

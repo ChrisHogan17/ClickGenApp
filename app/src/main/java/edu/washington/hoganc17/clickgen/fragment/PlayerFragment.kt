@@ -11,11 +11,13 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.musicg.wave.Wave
+import edu.washington.hoganc17.clickgen.MainActivity
 import edu.washington.hoganc17.clickgen.model.AudioManager
 import edu.washington.hoganc17.clickgen.model.MyWaveHeader
 import edu.washington.hoganc17.clickgen.R
 import edu.washington.hoganc17.clickgen.model.AudioTrio
 import kotlinx.android.synthetic.main.fragment_player.*
+import kotlinx.android.synthetic.main.fragment_upload.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -83,6 +85,10 @@ class PlayerFragment: Fragment() {
         }
         btnStop.isEnabled = false
 
+        btnUploadAgain.setOnClickListener {
+            (activity as MainActivity).onBackPressed()
+        }
+
         seekBarTime.setOnSeekBarChangeListener(
 
                 object : SeekBar.OnSeekBarChangeListener {
@@ -129,7 +135,6 @@ class PlayerFragment: Fragment() {
     private fun playSong() {
         if (stopped) { // Start MediaPlayer
             songPlayer = MediaPlayer()
-            //songPlayer = MediaPlayer.create(this, R.raw.another_one_click)
 
             val pathName = context?.applicationContext?.filesDir?.path
 
@@ -191,23 +196,25 @@ class PlayerFragment: Fragment() {
     }
 
     fun stopPlayer() {
-        if (songPlayer.isPlaying || paused) {
-            paused = false
-            stopped = true
+        if(this::songPlayer.isInitialized) {
+            if (songPlayer.isPlaying || paused) {
+                paused = false
+                stopped = true
 
-            songPlayer.stop()
-            songPlayer.reset()
-            songPlayer.release()
-            playerReleased = true
+                songPlayer.stop()
+                songPlayer.reset()
+                songPlayer.release()
+                playerReleased = true
 
-            handler.removeCallbacks(runnable)
+                handler.removeCallbacks(runnable)
 
-            seekBarTime.progress = 0
-            tvCurrTime.text = ""
-            tvTotalTime.text = ""
+                seekBarTime.progress = 0
+                tvCurrTime.text = ""
+                tvTotalTime.text = ""
 
-            btnStop.isEnabled = false
-            btnPlay.setImageResource(R.drawable.play_button)
+                btnStop.isEnabled = false
+                btnPlay.setImageResource(R.drawable.play_button)
+            }
         }
     }
 

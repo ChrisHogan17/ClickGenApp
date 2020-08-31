@@ -112,8 +112,8 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == FILE_CHOICE_CODE && resultCode == Activity.RESULT_OK) {
-            // Change setup UI to loading UI
-            switchUi()
+            // Change upload UI to loading UI
+            setLoadingUi()
 
             val uri = data?.data
 
@@ -158,7 +158,7 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 
-    private fun switchUi(){
+    private fun setLoadingUi(){
         btnUploadFile.visibility = View.GONE
         tvAppDescription.visibility = View.GONE
         tvUploadInstructions.visibility = View.GONE
@@ -170,6 +170,20 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         tvPleaseWait.visibility = View.VISIBLE
         progressBar.visibility = View.VISIBLE
+    }
+
+    fun setUploadUi() {
+        btnUploadFile.visibility = View.VISIBLE
+        tvAppDescription.visibility = View.VISIBLE
+        tvUploadInstructions.visibility = View.VISIBLE
+        spinnerFrequency.visibility = View.VISIBLE
+        spinnerDuration.visibility = View.VISIBLE
+        tvClickSettings.visibility = View.VISIBLE
+        tvFrequency.visibility = View.VISIBLE
+        tvDuration.visibility = View.VISIBLE
+
+        tvPleaseWait.visibility = View.GONE
+        progressBar.visibility = View.GONE
     }
 
     // Code from: https://stackoverflow.com/questions/5568874/how-to-extract-the-file-name-from-uri-returned-from-intent-action-get-content/53170119
