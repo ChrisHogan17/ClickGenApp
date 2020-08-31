@@ -190,7 +190,7 @@ class PlayerFragment: Fragment() {
         }
     }
 
-    private fun stopPlayer() {
+    fun stopPlayer() {
         if (songPlayer.isPlaying || paused) {
             paused = false
             stopped = true

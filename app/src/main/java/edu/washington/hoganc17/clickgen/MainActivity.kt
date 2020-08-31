@@ -1,6 +1,7 @@
 package edu.washington.hoganc17.clickgen
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.musicg.wave.Wave
 import edu.washington.hoganc17.clickgen.fragment.PlayerFragment
@@ -128,8 +129,14 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
     }
 
     override fun onBackPressed() {
-        if (shouldAllowBack) {
-            super.onBackPressed()
+        // If there is a playerFragment running, stop it gracefully before going back to avoid crashing
+        val frag = supportFragmentManager.findFragmentByTag(PlayerFragment.TAG) as? PlayerFragment
+
+        frag?.let {
+            it.stopPlayer()
+            Log.i("BLITZ", "CRANK")
         }
+
+        super.onBackPressed()
     }
 }
