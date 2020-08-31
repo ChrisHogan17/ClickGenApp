@@ -12,6 +12,7 @@
         android:id="@+id/ivTitle"
         android:layout_width="246dp"
         android:layout_height="108dp"
+        android:layout_marginTop="24dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/MetroGnome"
         android:src="@drawable/group_3"
@@ -25,7 +26,7 @@
         android:contentDescription="@string/MetroGnome"
         android:layout_width="85dp"
         android:layout_height="90dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="34dp"
         android:src="@drawable/gnome"
         app:layout_constraintHorizontal_bias="0.699"
         app:layout_constraintLeft_toLeftOf="@id/ivTitle"
@@ -90,9 +91,10 @@
 
     <Spinner
         android:id="@+id/spinnerFrequency"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toTopOf="@id/spinnerDuration"
         app:layout_constraintLeft_toRightOf="@id/tvFrequency"
         app:layout_constraintRight_toRightOf="parent"
@@ -113,9 +115,10 @@
 
     <Spinner
         android:id="@+id/spinnerDuration"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         app:layout_constraintLeft_toRightOf="@id/tvDuration"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinnerFrequency" />
