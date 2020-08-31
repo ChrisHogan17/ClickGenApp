@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
     private val audioManager = AudioManager()
     private var clickFrequency = 880.0f
     private var clickDuration = 0.5f
+    private var shouldAllowBack = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
@@ -117,10 +118,18 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         val playerFragment = PlayerFragment()
         playerFragment.arguments = bundle
 
+        shouldAllowBack = false
+
         supportFragmentManager
             .beginTransaction()
             .add(R.id.fragContainer, playerFragment, PlayerFragment.TAG)
             .addToBackStack(PlayerFragment.TAG)
             .commit()
+    }
+
+    override fun onBackPressed() {
+        if (shouldAllowBack) {
+            super.onBackPressed()
+        }
     }
 }
