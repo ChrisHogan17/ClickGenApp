@@ -15,6 +15,7 @@
     <string name="click_frequency">Frequency (Hz) :</string>
     <string name="click_duration">Duration (sec) :</string>
     <string name="click_settings">Click settings:</string>
+    <string name="new_upload_button">Upload another file</string>
 
     <string-array name="frequencies">
         <item>900 Hz</item>
