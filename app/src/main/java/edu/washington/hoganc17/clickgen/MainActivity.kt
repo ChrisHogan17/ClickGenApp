@@ -1,9 +1,6 @@
 package edu.washington.hoganc17.clickgen
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import com.musicg.wave.Wave
 import edu.washington.hoganc17.clickgen.fragment.PlayerFragment
@@ -105,6 +102,24 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
 
         val bundle = Bundle()
         bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedTracks)
+
+        val playerFragment = PlayerFragment()
+        playerFragment.arguments = bundle
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragContainer, playerFragment, PlayerFragment.TAG)
+            .addToBackStack(PlayerFragment.TAG)
+            .commit()
+    }
+
+    override fun onFileUploaded(mixedStream: InputStream) {
+        val mixedBytes = ByteArray(mixedStream.available())
+        mixedStream.read(mixedBytes)
+
+        val bundle = Bundle()
+
+        bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedBytes)
 
         val playerFragment = PlayerFragment()
         playerFragment.arguments = bundle
