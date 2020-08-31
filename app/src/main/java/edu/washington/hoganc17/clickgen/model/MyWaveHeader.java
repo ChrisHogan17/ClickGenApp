@@ -28,7 +28,7 @@ public class MyWaveHeader {
 
     // Default WaveHeader for our servers expected output
     public MyWaveHeader(int numBytes) {
-        this((short) 1, (short) 2, 44100, (short) 16, numBytes);
+        this((short) 1, (short) 2, 22050, (short) 16, numBytes);
     }
 
     public MyWaveHeader(short format, short numChannels, int sampleRate, short bitsPerSample, int numBytes) {
