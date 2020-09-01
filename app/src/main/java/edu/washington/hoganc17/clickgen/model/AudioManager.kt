@@ -1,6 +1,5 @@
 package edu.washington.hoganc17.clickgen.model
 
-import android.util.Log
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
@@ -106,7 +105,6 @@ class AudioManager {
 
     fun placeClicks(spacedVals: FloatArray, sr: Float, times: IntArray, length: Int): ArrayList<Short> {
         var positions: IntArray = timeToSamples(sr, times)
-        Log.i("HELP", "Random sample: " + positions[200].toString() + " Size:" + positions.size)
         var newPositions: ArrayList<Short> = arrayListOf<Short>()
 
         val sentinel: Int = positions.size
@@ -127,8 +125,6 @@ class AudioManager {
             }
         }
 
-        Log.i("I hate this", newPositions.toString())
-
         var ret: ArrayList<Short> = ArrayList<Short>(newPositions.subList(0, length/2))
         return ret
     }
@@ -141,8 +137,6 @@ class AudioManager {
         min?.let {
             max2 = abs(it.toInt())
         }
-        Log.i("PAIN", max1.toString())
-        Log.i("SUFFERING", max2.toString())
 
         var absMax: Int? = 1;
         if (max1 != null && max2 != null) {
