@@ -239,7 +239,7 @@ class PlayerFragment: Fragment() {
     private fun saveFile() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.type = "audio/x-wav"
-        intent.putExtra(Intent.EXTRA_TITLE, "MyClickTrack.wav")
+        intent.putExtra(Intent.EXTRA_TITLE, title +" Click Track.wav")
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         startActivityForResult(intent, DIR_CHOICE_CODE)
     }
