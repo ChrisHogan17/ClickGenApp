@@ -12,7 +12,7 @@
     <string name="app_description">The ability to seamlessly generate a metronome click track for any song - right at your fingertips!</string>
     <string name="upload_instructions">Start by uploading a song of your choice in the supported formats of <i>.mp3</i> or <i>.wav</i></string>
     <string name="please_wait">Please wait while your file is processed by our team of gnomes</string>
-    <string name="click_frequency">Frequency (Hz) :</string>
+    <string name="click_frequency">Pitch (Hz) :</string>
     <string name="click_duration">Duration (sec) :</string>
     <string name="click_settings">Click settings:</string>
     <string name="new_upload_button">Upload another file</string>
