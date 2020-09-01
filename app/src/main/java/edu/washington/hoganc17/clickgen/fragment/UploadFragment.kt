@@ -121,7 +121,7 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 doAsync {
                     try {
 
-                        val mixedInputStream: InputStream = FileUploadUtils.requestFile(inputStream, GENERATE_MIXED_LOCAL_URL, name, clickFrequency, clickDuration)
+                        val mixedInputStream: InputStream = FileUploadUtils.requestFile(inputStream, GENERATE_MIXED_URL, name, clickFrequency, clickDuration)
 
                         uiThread {
                             onUploadListener?.onFileUploaded(mixedInputStream, name)
