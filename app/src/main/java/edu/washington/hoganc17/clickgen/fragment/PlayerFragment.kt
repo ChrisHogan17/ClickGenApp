@@ -119,27 +119,6 @@ class PlayerFragment: Fragment() {
                     }
                 }
         )
-
-        seekBarSongVolume.setOnSeekBarChangeListener(
-                object: SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(
-                            seekBar: SeekBar?,
-                            progress: Int,
-                            fromUser: Boolean
-                    ) {
-                        val volumeNum = progress / 100f
-                        if (!stopped) {
-                            songPlayer.setVolume(volumeNum, volumeNum)
-                        }
-                    }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    }
-
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    }
-                }
-        )
     }
 
     private fun playSong() {
@@ -153,9 +132,6 @@ class PlayerFragment: Fragment() {
             songPlayer.start()
 
             playerReleased = false
-
-            songPlayer.setVolume(.5f, .5f)
-            seekBarSongVolume.progress = 50
 
             btnStop.isEnabled = true
 
