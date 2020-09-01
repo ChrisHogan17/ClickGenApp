@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import edu.washington.hoganc17.clickgen.MainActivity
 import edu.washington.hoganc17.clickgen.R
@@ -266,6 +267,10 @@ class PlayerFragment: Fragment() {
                     fo.close()
                 }
             }
+
+            Toast.makeText(context, "Click track saved!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "There was a problem saving your file", Toast.LENGTH_SHORT).show()
         }
     }
 

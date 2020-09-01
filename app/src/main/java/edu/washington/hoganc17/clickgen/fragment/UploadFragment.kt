@@ -125,7 +125,6 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     try {
 
                         val mixedInputStream: InputStream = FileUploadUtils.requestFile(inputStream, GENERATE_MIXED_LOCAL_URL, name, clickFrequency, clickDuration)
-                        Log.i("CASHEW", "Got mixed auduio")
 
                         uiThread {
                             onUploadListener?.onFileUploaded(mixedInputStream)
@@ -134,7 +133,7 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     } catch (ex: Exception) {
                         when (ex) {
                             is IOException, is NullPointerException, is JSONException -> {
-                                Log.i("HULK", ex.toString())
+                                Log.i("Error uploading file: ", ex.toString())
                             }
                             else -> throw ex
                         }
@@ -147,7 +146,6 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val itemContent = parent?.getItemAtPosition(position).toString()
         val numericalVal = itemContent.split(" ")[0]
-        Log.i("BRIT", numericalVal)
         if(parent?.id == R.id.spinnerDuration) {
             clickDuration = numericalVal.toFloat()
         } else if (parent?.id == R.id.spinnerFrequency) {
