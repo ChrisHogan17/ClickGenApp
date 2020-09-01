@@ -142,4 +142,10 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
 
         super.onBackPressed()
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.clear()
+    }
+
 }

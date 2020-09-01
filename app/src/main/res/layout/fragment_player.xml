@@ -114,13 +114,26 @@
         app:layout_constraintRight_toRightOf="parent"
         />
 
+
+    <Button
+        android:id="@+id/btnSaveFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSongVolume"
+        app:layout_constraintBottom_toTopOf="@id/btnUploadAgain"
+        android:layout_marginTop="45dp"
+        android:text="@string/save_file"
+        />
+
     <Button
         android:id="@+id/btnUploadAgain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSongVolume"
+        app:layout_constraintTop_toBottomOf="@id/btnSaveFile"
         android:layout_marginTop="45dp"
         android:text="@string/new_upload_button"
         />

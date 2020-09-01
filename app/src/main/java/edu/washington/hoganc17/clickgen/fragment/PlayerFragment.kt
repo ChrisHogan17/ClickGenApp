@@ -1,6 +1,7 @@
 package edu.washington.hoganc17.clickgen.fragment
 
-import android.content.Context
+import android.app.Activity
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -10,23 +11,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
-import com.musicg.wave.Wave
 import edu.washington.hoganc17.clickgen.MainActivity
-import edu.washington.hoganc17.clickgen.model.AudioManager
-import edu.washington.hoganc17.clickgen.model.MyWaveHeader
 import edu.washington.hoganc17.clickgen.R
-import edu.washington.hoganc17.clickgen.model.AudioTrio
+import edu.washington.hoganc17.clickgen.model.MyWaveHeader
 import kotlinx.android.synthetic.main.fragment_player.*
-import kotlinx.android.synthetic.main.fragment_upload.*
+import java.io.BufferedWriter
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
+import java.io.OutputStreamWriter
+
 
 class PlayerFragment: Fragment() {
 
     companion object {
         val TAG: String = PlayerFragment::class.java.simpleName
-        val OUT_BYTES = "OUT_BYTES"
+        const val OUT_BYTES = "OUT_BYTES"
+        const val DIR_CHOICE_CODE = 1234
     }
 
     private lateinit var songPlayer: MediaPlayer
@@ -37,11 +37,16 @@ class PlayerFragment: Fragment() {
     private var stopped = true
     private var playerReleased = true
 
+    lateinit var clickTrack: ByteArray
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val mixedTracks = arguments?.getByteArray(OUT_BYTES)
 
         mixedTracks?.let {track ->
+
+            clickTrack = track
 
             val pathName = context?.applicationContext?.filesDir?.path
 
@@ -84,6 +89,10 @@ class PlayerFragment: Fragment() {
             stopPlayer()
         }
         btnStop.isEnabled = false
+
+        btnSaveFile.setOnClickListener {
+            saveFile()
+        }
 
         btnUploadAgain.setOnClickListener {
             (activity as MainActivity).onBackPressed()
@@ -218,6 +227,35 @@ class PlayerFragment: Fragment() {
         }
     }
 
+    private fun saveFile() {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.type = "audio/x-wav"
+        intent.putExtra(Intent.EXTRA_TITLE, "MyClickTrack.wav")
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        startActivityForResult(intent, DIR_CHOICE_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == DIR_CHOICE_CODE && resultCode == Activity.RESULT_OK) {
+            val uri = data?.data
+
+            uri?.let {
+                val fo = context?.contentResolver?.openOutputStream(uri)
+                fo?.let {
+                    val mwh = MyWaveHeader(clickTrack.size)
+                    mwh.write(fo)
+
+
+                    fo.write(clickTrack)
+                    fo.flush()
+                    fo.close()
+                }
+            }
+        }
+    }
+
     private fun formatMinSec(millis: Int): String {
         val min = millis / 1000 / 60
         val sec = millis / 1000 % 60
@@ -225,5 +263,10 @@ class PlayerFragment: Fragment() {
         if (sec < 10) duration += "0"
         duration += sec
         return duration
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.clear()
     }
 }
