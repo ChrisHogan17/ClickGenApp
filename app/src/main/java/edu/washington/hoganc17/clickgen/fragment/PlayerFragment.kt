@@ -25,12 +25,15 @@ class PlayerFragment: Fragment() {
     companion object {
         val TAG: String = PlayerFragment::class.java.simpleName
         const val OUT_BYTES = "OUT_BYTES"
+        const val OUT_TITLE = "OUT_TITLE"
         const val DIR_CHOICE_CODE = 1234
     }
 
     private lateinit var songPlayer: MediaPlayer
     private lateinit var runnable: Runnable
     private var handler: Handler = Handler()
+
+    private var title = "Click Track"
 
     private var paused = false
     private var stopped = true
@@ -42,6 +45,12 @@ class PlayerFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val mixedTracks = arguments?.getByteArray(OUT_BYTES)
+
+        val songTitle = arguments?.getString(OUT_TITLE)
+
+        songTitle?.let {
+            title = parseTitle(it)
+        }
 
         mixedTracks?.let {track ->
 
@@ -75,6 +84,9 @@ class PlayerFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        tvSongTitle.text = title
+        tvSongTitle.isSelected = true
 
         btnPlay.setOnClickListener {
             if (stopped || paused) {
@@ -117,6 +129,15 @@ class PlayerFragment: Fragment() {
                     }
                 }
         )
+    }
+
+    private fun parseTitle(title: String): String {
+        var ret = ""
+        val extension = title.substring(title.length - 4)
+        if (extension == ".mp3" || extension == ".wav") {
+            ret = title.substring(0, title.length -4)
+        }
+        return ret
     }
 
     private fun playSong() {

@@ -5,7 +5,7 @@ import java.io.InputStream
 interface OnUploadListener {
     fun onFileUploaded(songStream: InputStream, clickStream: InputStream)
 
-    fun onFileUploaded(mixedStream: InputStream)
+    fun onFileUploaded(mixedStream: InputStream, title: String?)
 
     fun onFileUploaded(trio: AudioTrio)
 }

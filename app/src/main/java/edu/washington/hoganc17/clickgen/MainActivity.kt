@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
     }
 
 
-    // Process for when the server generates the click track
+    // Process for when the server generates the click track and we combine it with song on app
     override fun onFileUploaded(songStream: InputStream, clickStream: InputStream) {
 
         val w1 = Wave(songStream)
@@ -107,13 +107,15 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
             .commit()
     }
 
-    override fun onFileUploaded(mixedStream: InputStream) {
+    // Process for when the server returns the combined track
+    override fun onFileUploaded(mixedStream: InputStream, title: String?) {
         val mixedBytes = ByteArray(mixedStream.available())
         mixedStream.read(mixedBytes)
 
         val bundle = Bundle()
 
         bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedBytes)
+        bundle.putString(PlayerFragment.OUT_TITLE, title)
 
         val playerFragment = PlayerFragment()
         playerFragment.arguments = bundle
