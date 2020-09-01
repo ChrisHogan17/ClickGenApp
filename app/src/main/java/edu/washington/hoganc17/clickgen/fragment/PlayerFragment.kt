@@ -16,10 +16,8 @@ import edu.washington.hoganc17.clickgen.MainActivity
 import edu.washington.hoganc17.clickgen.R
 import edu.washington.hoganc17.clickgen.model.MyWaveHeader
 import kotlinx.android.synthetic.main.fragment_player.*
-import java.io.BufferedWriter
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStreamWriter
 
 
 class PlayerFragment: Fragment() {

@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import edu.washington.hoganc17.clickgen.MainActivity
 import edu.washington.hoganc17.clickgen.R
 import edu.washington.hoganc17.clickgen.model.FileUploadUtils
 import edu.washington.hoganc17.clickgen.model.OnUploadListener
@@ -22,8 +21,6 @@ import kotlinx.android.synthetic.main.fragment_upload.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.json.JSONException
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 

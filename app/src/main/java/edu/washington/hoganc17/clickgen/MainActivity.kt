@@ -1,7 +1,6 @@
 package edu.washington.hoganc17.clickgen
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.musicg.wave.Wave
 import edu.washington.hoganc17.clickgen.fragment.PlayerFragment
