@@ -175,7 +175,21 @@ class PlayerFragment: Fragment() {
         initializeTimeSeekBar()
 
         songPlayer.setOnCompletionListener {
+            paused = false
+            stopped = true
+
+            songPlayer.stop()
+            songPlayer.reset()
+            songPlayer.release()
+            playerReleased = true
+
+            handler.removeCallbacks(runnable)
+
+            seekBarTime.progress = 0
+            tvCurrTime.text = "0:00"
+
             btnStop.isEnabled = false
+            btnPlay.setImageResource(R.drawable.play_button)
         }
     }
 
@@ -218,8 +232,7 @@ class PlayerFragment: Fragment() {
                 handler.removeCallbacks(runnable)
 
                 seekBarTime.progress = 0
-                tvCurrTime.text = ""
-                tvTotalTime.text = ""
+                tvCurrTime.text = "0:00"
 
                 btnStop.isEnabled = false
                 btnPlay.setImageResource(R.drawable.play_button)
