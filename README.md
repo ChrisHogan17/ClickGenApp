@@ -1,6 +1,6 @@
-# Clicktrack Generator Application
+## MetroGnome: A Click Track Generator for Android
 
-The android application component for: https://github.com/EliGrosman/HuskyTechSummer2020
+The android application component for: https://github.com/EliGrosman/MetroGnome
 
 A tool which detects beats in a song and plays a metronome in sync with the
 recording of the song.
