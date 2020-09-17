@@ -43,11 +43,12 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         val songSampleAmps: ShortArray = w1.sampleAmplitudes
         songInputStream.close()
 
-        // times and sr are given by the server
         val length = songSampleAmps.size
 
+        // Generate the click track
         val clickSampleAmps = audioManager.generateClicktrack(times, sampleRate, clickFrequency, clickDuration, length)
 
+        // Double the clickSampleAmps to convert to stereo
         val doubledClickAmps = ShortArray(songSampleAmps.size)
         var c = 0
         for (i in clickSampleAmps.indices) {
@@ -56,7 +57,10 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
             c += 2
         }
 
-        val mixedTracks = audioManager.mixAmplitudesSixteenBit(doubledClickAmps, doubledClickAmps)
+        // Combine song sample amplitudes and click sample amplitudes into one track
+        val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, doubledClickAmps)
+
+        // Open the player with the mixed track
 
         val bundle = Bundle()
         bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedTracks)
@@ -83,6 +87,7 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
         val clickSampleAmps: ShortArray = w2.sampleAmplitudes
         clickStream.close()
 
+        // Double the clickSampleAmps to convert to stereo
         val doubledClickAmps = ShortArray(songSampleAmps.size)
         var c = 0
         for (i in clickSampleAmps.indices) {
@@ -91,7 +96,10 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
             c += 2
         }
 
+        // Combine song sample amplitudes and click sample amplitudes into one track
         val mixedTracks = audioManager.mixAmplitudesSixteenBit(songSampleAmps, doubledClickAmps)
+
+        // Open the player with the mixed track
 
         val bundle = Bundle()
         bundle.putByteArray(PlayerFragment.OUT_BYTES, mixedTracks)
@@ -107,6 +115,7 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
     }
 
     // Process for when the server returns the combined track
+    // (The process currently being used)
     override fun onFileUploaded(mixedStream: InputStream, title: String?) {
         val mixedBytes = ByteArray(mixedStream.available())
         mixedStream.read(mixedBytes)
@@ -118,7 +127,7 @@ class MainActivity : AppCompatActivity(), OnUploadListener {
 
         val playerFragment = PlayerFragment()
         playerFragment.arguments = bundle
-        
+
         supportFragmentManager
             .beginTransaction()
             .add(R.id.fragContainer, playerFragment, PlayerFragment.TAG)
