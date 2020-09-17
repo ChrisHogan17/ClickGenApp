@@ -34,22 +34,22 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
     companion object {
         val TAG: String = UploadFragment::class.java.simpleName
         const val FILE_CHOICE_CODE = 4307
-        private const val CONVERT_SONG_URL = "http://174.21.95.118:5000/convert"
+        private const val CONVERT_SONG_URL = "http://server.triangleuw.com:5000/convert"
         private const val CONVERT_SONG_LOCAL_URL = "http://192.168.0.76:5000/convert"
 
-        private const val GENERATE_CLICK_URL = "http://174.21.95.118:5000/generate"
+        private const val GENERATE_CLICK_URL = "http://server.triangleuw.com:5000/generate"
         private const val GENERATE_CLICK_LOCAL_URL = "http://192.168.0.76:5000/generate"
 
-        private const val GENERATE_FULL_URL = "http://174.21.95.118:5000/generateFull"
+        private const val GENERATE_FULL_URL = "http://server.triangleuw.com:5000/generateFull"
         private const val GENERATE_FULL_LOCAL_URL = "http://192.168.0.76:5000/generateFull"
 
-        private const val GENERATE_TWO_URL = "http://174.21.95.118:5000/generateTwo"
+        private const val GENERATE_TWO_URL = "http://server.triangleuw.com:5000/generateTwo"
         private const val GENERATE_TWO_LOCAL_URL = "http://192.168.0.76:5000/generateTwo"
 
-        private const val GENERATE_MIXED_URL = "http://174.21.95.118:5000/generateFull"
+        private const val GENERATE_MIXED_URL = "http://server.triangleuw.com:5000/generateFull"
         private const val GENERATE_MIXED_LOCAL_URL = "http://192.168.0.76:5000/generateFull"
 
-        private const val GET_FILE_URL = "http://174.21.95.118:5000/get"
+        private const val GET_FILE_URL = "http://server.triangleuw.com:5000/get"
         private const val GET_FILE_LOCAL_URL = "http://192.168.0.76:5000/get"
 
 
