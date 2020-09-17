@@ -1,4 +1,4 @@
-# Clicktrack Generator Application
+MetroGnome Application: A Click Track Generator
 
 The android application component for: https://github.com/EliGrosman/HuskyTechSummer2020
 
