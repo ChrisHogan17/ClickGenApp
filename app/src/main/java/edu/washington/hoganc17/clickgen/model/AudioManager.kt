@@ -1,6 +1,5 @@
 package edu.washington.hoganc17.clickgen.model
 
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
 
@@ -18,7 +17,6 @@ class AudioManager {
 
         var outputIndex = 0
 
-        var absMax = getAbsMax(trackOne)!! / 200.0f * 1.2f;
         for (i in trackTwo.indices) {
             // Numbers borrowed from Stack Overflow Code
             // Needs fine tuning as we don't really understand why the values are what they are
@@ -67,18 +65,18 @@ class AudioManager {
     }
 
     fun generateClicktrack(times: IntArray, sr: Float, click_freq: Float, click_dur: Float, length: Int): ShortArray {
-        var angular_freq: Double = 2 * Math.PI * click_freq / sr.toDouble()
-        var logBins: Int = Math.round(sr * click_dur).toInt()
+        val angular_freq: Double = 2 * Math.PI * click_freq / sr.toDouble()
+        val logBins: Int = Math.round(sr * click_dur)
         var spacedVals: FloatArray = generateLogSpace(0, -1000, logBins, 2.0)
         spacedVals = arange(spacedVals, angular_freq)
 
-        var clickArrayList: ArrayList<Short> = placeClicks(spacedVals, sr, times, length)
-        var clickArray: Array<Short> = clickArrayList.toTypedArray()
+        val clickArrayList: ArrayList<Short> = placeClicks(spacedVals, times, length)
+        val clickArray: Array<Short> = clickArrayList.toTypedArray()
 
         return clickArray.toShortArray()
     }
 
-    fun generateLogSpace(min: Int, max: Int, logBins: Int, logarithmicBase: Double): FloatArray {
+    private fun generateLogSpace(min: Int, max: Int, logBins: Int, logarithmicBase: Double): FloatArray {
         val delta = ((max - min) / logBins).toDouble()
         var deltaTot = 0.0
         val spacedVals = FloatArray(logBins)
@@ -89,29 +87,29 @@ class AudioManager {
         return spacedVals
     }
 
-    fun arange(spacedVals: FloatArray, angular_freq: Double): FloatArray {
-        for (i in 0 until spacedVals.size) {
+    private fun arange(spacedVals: FloatArray, angular_freq: Double): FloatArray {
+        for (i in spacedVals.indices) {
             spacedVals[i] = spacedVals.get(i) * Math.sin(i * angular_freq).toFloat()
         }
         return spacedVals
     }
 
-    fun timeToSamples(sr: Float, times: IntArray): IntArray {
-        for (i in 0 until times.size) {
+    private fun timeToSamples(times: IntArray): IntArray {
+        for (i in times.indices) {
             times[i] = (times[i].toFloat() * 512).toInt()
         }
         return times
     }
 
-    fun placeClicks(spacedVals: FloatArray, sr: Float, times: IntArray, length: Int): ArrayList<Short> {
-        var positions: IntArray = timeToSamples(sr, times)
-        var newPositions: ArrayList<Short> = arrayListOf<Short>()
+    private fun placeClicks(spacedVals: FloatArray, times: IntArray, length: Int): ArrayList<Short> {
+        val positions: IntArray = timeToSamples(times)
+        val newPositions: ArrayList<Short> = arrayListOf<Short>()
 
         val sentinel: Int = positions.size
 
         for (i in 0 until sentinel) {
-            var start = positions.get(i)
-            var end = start + spacedVals.size
+            val start = positions.get(i)
+            val end = start + spacedVals.size
             if (end >= length) {
                 //placing a click but just shortened to fit length
                 for (k in 0 until length - start) {
@@ -125,8 +123,7 @@ class AudioManager {
             }
         }
 
-        var ret: ArrayList<Short> = ArrayList<Short>(newPositions.subList(0, length/2))
-        return ret
+        return ArrayList(newPositions.subList(0, length/2))
     }
 
     private fun getAbsMax(track: ShortArray): Int? {
@@ -138,7 +135,7 @@ class AudioManager {
             max2 = abs(it.toInt())
         }
 
-        var absMax: Int? = 1;
+        var absMax: Int? = 1
         if (max1 != null && max2 != null) {
             absMax = if (max1 >= max2!!) {
                 max1.toInt()
