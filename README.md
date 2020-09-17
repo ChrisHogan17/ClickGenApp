@@ -1,4 +1,4 @@
-## MetroGnome Application: A Click Track Generator
+## MetroGnome: A Click Track Generator for Android
 
 The android application component for: https://github.com/EliGrosman/MetroGnome
 
