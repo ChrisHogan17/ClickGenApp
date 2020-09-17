@@ -52,6 +52,8 @@ class PlayerFragment: Fragment() {
             title = parseTitle(it)
         }
 
+
+        // Write the received song/click-track to a file for the mediaPlayer to use
         mixedTracks?.let {track ->
 
             clickTrack = track
@@ -131,6 +133,7 @@ class PlayerFragment: Fragment() {
         )
     }
 
+    // Remove any file extensions that may be in the title
     private fun parseTitle(title: String): String {
         var ret = ""
         val extension = title.substring(title.length - 4)
