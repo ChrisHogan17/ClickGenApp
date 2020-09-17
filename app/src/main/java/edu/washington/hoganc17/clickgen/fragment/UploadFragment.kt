@@ -82,6 +82,7 @@ class UploadFragment : Fragment(), AdapterView.OnItemSelectedListener {
             selectFile()
         }
 
+        // Set up spinners
         context?.let {
             val freqAdapter = ArrayAdapter.createFromResource(it, R.array.frequencies, android.R.layout.simple_spinner_item)
             freqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
